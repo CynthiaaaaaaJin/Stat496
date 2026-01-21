@@ -26,7 +26,7 @@ RQ1 (Primary): Holding personalization information constant, does neutral-explan
 -RQ2 (Secondary): Under token/latency budgets, what is the cost–utility tradeoff of generating LLM copy (and how sensitive are results to copy length constraints)?
 
 3) **Method**
-Use an e-commerce behavior-log dataset (views → cart → purchase). Generate 
+Use an e-commerce behavior-log dataset (views → cart → purchase)(ex.Amazon Reviews + Product Metadata (UCSD / SNAP)). Generate 
 (1) a short user intent profile from recent session events, then 
 (2) NP vs PP one-sentence copy under the same token limit and a strict “no new facts” rule. Train a user-response model (e.g., XGBoost) to predict add-to-cart/purchase and estimate counterfactual uplift by comparing predicted expected outcomes on the same sessions.
 
