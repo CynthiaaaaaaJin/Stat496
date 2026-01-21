@@ -2,15 +2,20 @@ Stat 496 Capstone
 
 # Projectidea 1
 
-1) **Predicting when an LLM will be wrong (failure / hallucination risk)**
-   - We’ll run an LLM on a benchmark dataset, then automatically mark whether each answer is correct when possible.
-   - After that, We’ll extract simple features (eg. question length, how many numbers/constraints it has, the model’s confidence, answer length) and train a ML model to predict the chance the LLM will fail.
+1）**Goal**
+   - Build a machine learning “risk score” that predicts when a large language model answer is likely to be wrong or hallucinated, so we can trigger extra verification only for high-risk cases.
 
-2) **Prompt A/B testing + using ML to explain what works**
+2) **Method**
+
+(1）Predicting when an LLM will be wrong (failure / hallucination risk)
+      - We’ll run an LLM on a benchmark dataset, then automatically mark whether each answer is correct when possible.
+      - After that, We’ll extract simple features (eg. question length, how many numbers/constraints it has, the model’s confidence, answer length) and train a ML model to predict the chance the LLM will fail.
+
+(2）Prompt A/B testing + using ML to explain what works
    - We’ll design a few different prompt styles (eg. basic, step-by-step, few-shot, be concise and cite sources) and test them on the same set of questions to see which one performs better.
    - Then we’ll use ML to analyze the results and figure out what kinds of questions benefit most from each prompt style, so it’s not just prompting by intuition.
 
-3) **RAG reliability: when retrieval helps vs when it makes things worse**
+(3) RAG reliability: when retrieval helps vs when it makes things worse
    - We’ll intoduce a simple RAG system and compare RAG vs no-RAG.
    - We’ll train an ML model to predict when retrieval improves accuracy and when it adds noise or leads to confident-but-wrong answers.
 
