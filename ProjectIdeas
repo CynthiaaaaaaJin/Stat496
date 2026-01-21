@@ -13,3 +13,22 @@ Stat 496 Capstone
 3) **RAG reliability: when retrieval helps vs when it makes things worse**
    - We’ll intoduce a simple RAG system and compare RAG vs no-RAG.
    - We’ll train an ML model to predict when retrieval improves accuracy and when it adds noise or leads to confident-but-wrong answers.
+
+
+
+# Projectidea 2
+
+1) **Goal**
+Run a realistic, neutral A/B-style offline experiment where both treatments use the same personalization info and same item facts, but differ only in copy style: Neutral-Personalized (explanatory/factual) vs Persuasive-Personalized (motivational/marketing).
+
+2) **Research Questions**
+RQ1 (Primary): Holding personalization information constant, does neutral-explanatory vs persuasive-motivational LLM-generated copy lead to a measurable difference in offline engagement/conversion proxies (e.g., expected add-to-cart / purchase probability)?
+-RQ2 (Secondary): Under token/latency budgets, what is the cost–utility tradeoff of generating LLM copy (and how sensitive are results to copy length constraints)?
+
+3) **Method**
+Use an e-commerce behavior-log dataset (views → cart → purchase). Generate 
+(1) a short user intent profile from recent session events, then 
+(2) NP vs PP one-sentence copy under the same token limit and a strict “no new facts” rule. Train a user-response model (e.g., XGBoost) to predict add-to-cart/purchase and estimate counterfactual uplift by comparing predicted expected outcomes on the same sessions.
+
+4) **Rigor & Output**
+ Report uplift + 95% bootstrap CI + paired two-sided tests, plus a cost–utility curve (uplift vs tokens/latency) and segment results (cold-start vs warm-start, price/category buckets) to show when each style helps or hurts.
