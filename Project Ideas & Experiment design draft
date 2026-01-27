@@ -4,8 +4,8 @@ Project Ideas & Experiment design draft
 - Check how different prompts and temperature influence the accuracy of LLm responses
 
 **Questions**
- (1) Which user instruction styles improve correctness(, stability, and what are their token costs)?
- (2) How do temperature change correctness (and stability, and when is it worth the extra cost)?
+ (1) Which user instruction styles improve correctness, stability, and what are their token costs?
+ (2) How do temperature change correctness and stability, and when is it worth the extra cost?
  (3) Which prompt strategy produces the most consistent final answers across repeated runs, and how does stability relate to accuracy?
  (4) Can that prompt style be applied to other models?
 
@@ -16,13 +16,14 @@ Project Ideas & Experiment design draft
 - T2: Answer final result with step by step reasoning.
 - T3: Answer final result using only cite background.
 - T4: Answer final result with step by step analysis and cite background.
-- （T5: Answer with self check.）
+- T5: Answer with self check.
 
 **Calculation**
 - Accuracy = number of correct / number of questions
 - Correct = parsed final answer matches GSM8K ground truth.
 - Stability = For each question, check if all K runs gave the same final answer.
-- Cost(config)= N × avg tokens per run
+- Cost(config)= N × avg tokens per run 
+- avg tokens per run = (input tokens + output tokens)/2
 
 
 
