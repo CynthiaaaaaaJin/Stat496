@@ -15,6 +15,7 @@ Project Ideas & Experiment design draft
 - T1: Only answer final result.
 - T2: Answer final result with step by step reasoning.
 - T3: Answer final result using only cite background.
+(for multiple choices, we treat options as background)
 - T4: Answer final result with step by step analysis and cite background.
 - T5: Answer with self check.
 
