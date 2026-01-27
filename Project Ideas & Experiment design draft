@@ -22,7 +22,7 @@ Project Ideas & Experiment design draft
 **Calculation**
 - Accuracy = number of correct / number of questions
 - Correct = parsed final answer matches GSM8K ground truth.
-- Stability = For each question, check if all K runs gave the same final answer.
+- Stability = For each question, check if all K runs gave the same final answer. （under dif temperature?)
 - Cost(config)= N × avg tokens per run 
 - avg tokens per run = (input tokens + output tokens)/2
 
