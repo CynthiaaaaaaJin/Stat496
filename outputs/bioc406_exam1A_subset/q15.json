@@ -1,0 +1,20 @@
+{
+  "id": "BIOC406_Exam1A_Q15",
+  "question": "Which of these statements about biological nitrogen fixing is TRUE?",
+  "choices": {
+    "A": "The reduction of N to NH occurs at the FeMo cofactor. 2 3",
+    "B": "The P-cluster dissociates after each electron is transferred to the FeMo cofactor.",
+    "C": "ATP hydrolysis stimulates the reduction of N to NH . 2 3",
+    "D": "The reduction of N to NH occurs when 6 electrons have collected at the FeMo 2 3 cofactor.",
+    "E": "Reduction of the dinitrogen reductase (Fe-protein) requires ATP hydrolysis."
+  },
+  "answer": [
+    "A"
+  ],
+  "answer_format": "letters",
+  "source": {
+    "exam_pdf": "data/406_exam 1_A.pdf",
+    "key_pdf": "data/406_exam 1_A KEY_UPDATED.pdf",
+    "question_number": 15
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "BIOC406_Exam1A_Q09",
+  "question": "You keep a pet rat, Poppy, in your room. You come home after a long day, and Poppy is hungry – he hasn’t eaten in almost 12 hours. When you open the door to the cabinet where you store the rat food, your cat jumps out lunges toward Poppy. Poppy is scared and has clearly activated the “fight or flight” response, and his blood glucose levels rise rapidly. Which combination of molecular responses has been activated in Poppy’s tissues?",
+  "choices": {
+    "A": "↑ AMPK activity, ↓ mTOR activity, ↓ fructose-2,6-bisphosphate, ↑ glycogen synthase activity",
+    "B": "↑ cAMP, ↑ PKA activity, ↓ fructose-2,6-bisphosphate, ↑ gluconeogenesis",
+    "C": "↑ insulin signaling, ↑ PI3K activation, ↑ GLUT4 translocation, ↑ gluconeogenesis",
+    "D": "↓ AMPK activity, ↑ mTOR activity, ↑ glycolysis, ↑ glycogen synthesis",
+    "E": "↑ cAMP, ↑ mTOR activation, ↑ fatty acid synthesis, ↓ glycogen synthase activity"
+  },
+  "answer": [
+    "B"
+  ],
+  "answer_format": "letters",
+  "source": {
+    "exam_pdf": "data/406_exam 1_A.pdf",
+    "key_pdf": "data/406_exam 1_A KEY_UPDATED.pdf",
+    "question_number": 9
+  }
+}

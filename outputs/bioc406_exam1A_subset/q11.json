@@ -1,0 +1,20 @@
+{
+  "id": "BIOC406_Exam1A_Q11",
+  "question": "Biotin is attached to carboxylase enzymes through the action of a biotin-ligating protein. Which of these would occur if you inhibited the activity of the biotin-ligating protein in rodents?",
+  "choices": {
+    "A": "Fatty acid oxidation would be inhibited.",
+    "B": "Acetyl-CoA would accumulate in the cytoplasm.",
+    "C": "Palmitate would accumulate.",
+    "D": "Malonyl CoA would accumulate.",
+    "E": "TAG synthesis would increase."
+  },
+  "answer": [
+    "B"
+  ],
+  "answer_format": "letters",
+  "source": {
+    "exam_pdf": "data/406_exam 1_A.pdf",
+    "key_pdf": "data/406_exam 1_A KEY_UPDATED.pdf",
+    "question_number": 11
+  }
+}

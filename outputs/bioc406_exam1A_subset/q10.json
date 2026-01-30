@@ -1,0 +1,20 @@
+{
+  "id": "BIOC406_Exam1A_Q10",
+  "question": "Hartnup disease is a genetic syndrome in which there is an inactivating mutation in a gene required for the absorption of tryptophan. Based on this information, which of these drugs might help treat the neurological symptoms of patients with Hartnup disease?",
+  "choices": {
+    "A": "A selective serotonin reuptake inhibitor (SSRI).",
+    "B": "A dopamine reuptake inhibitor.",
+    "C": "An antihistamine.",
+    "D": "Reserpine, which depletes monoamines from synaptic vesicles.",
+    "E": "A GPCR inhibitor. Page 4 A Biochemistry 406 Jan. 26, 2026 Exam 1 - Version"
+  },
+  "answer": [
+    "A"
+  ],
+  "answer_format": "letters",
+  "source": {
+    "exam_pdf": "data/406_exam 1_A.pdf",
+    "key_pdf": "data/406_exam 1_A KEY_UPDATED.pdf",
+    "question_number": 10
+  }
+}

@@ -1,0 +1,1650 @@
+{
+  "by_question": [
+    {
+      "question_id": "BIOC406_Exam1A_Q06",
+      "treatment": "T0_normal",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q06",
+      "treatment": "T0_normal",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "C",
+        "A",
+        "E"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q06",
+      "treatment": "T1_final_only",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q06",
+      "treatment": "T1_final_only",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "A",
+        "E",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q06",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q06",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        null,
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q06",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q06",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "E",
+        "C",
+        null
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q06",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q06",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q06",
+      "treatment": "T5_self_check",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q06",
+      "treatment": "T5_self_check",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q08",
+      "treatment": "T0_normal",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q08",
+      "treatment": "T0_normal",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.3333333333333333,
+      "stable": 0,
+      "answers": [
+        "D",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q08",
+      "treatment": "T1_final_only",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q08",
+      "treatment": "T1_final_only",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q08",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q08",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q08",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q08",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q08",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q08",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.6666666666666666,
+      "stable": 0,
+      "answers": [
+        "A",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q08",
+      "treatment": "T5_self_check",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q08",
+      "treatment": "T5_self_check",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "C",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q09",
+      "treatment": "T0_normal",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q09",
+      "treatment": "T0_normal",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "D",
+        "A",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q09",
+      "treatment": "T1_final_only",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q09",
+      "treatment": "T1_final_only",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q09",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "E",
+        "E",
+        "E"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q09",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.3333333333333333,
+      "stable": 0,
+      "answers": [
+        "A",
+        "A",
+        "B"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q09",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q09",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.6666666666666666,
+      "stable": 0,
+      "answers": [
+        "B",
+        "D",
+        "B"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q09",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q09",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "D",
+        "A",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q09",
+      "treatment": "T5_self_check",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q09",
+      "treatment": "T5_self_check",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "E",
+        null,
+        null
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q10",
+      "treatment": "T0_normal",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q10",
+      "treatment": "T0_normal",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.6666666666666666,
+      "stable": 0,
+      "answers": [
+        "A",
+        "D",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q10",
+      "treatment": "T1_final_only",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q10",
+      "treatment": "T1_final_only",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.6666666666666666,
+      "stable": 0,
+      "answers": [
+        "A",
+        "B",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q10",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q10",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q10",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q10",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.6666666666666666,
+      "stable": 0,
+      "answers": [
+        "A",
+        "B",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q10",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q10",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q10",
+      "treatment": "T5_self_check",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q10",
+      "treatment": "T5_self_check",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "D",
+        "B",
+        null
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q11",
+      "treatment": "T0_normal",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q11",
+      "treatment": "T0_normal",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q11",
+      "treatment": "T1_final_only",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q11",
+      "treatment": "T1_final_only",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "E",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q11",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q11",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "D",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q11",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q11",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "A",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q11",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q11",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.3333333333333333,
+      "stable": 0,
+      "answers": [
+        "D",
+        "B",
+        null
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q11",
+      "treatment": "T5_self_check",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q11",
+      "treatment": "T5_self_check",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "D",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q12",
+      "treatment": "T0_normal",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q12",
+      "treatment": "T0_normal",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "E",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q12",
+      "treatment": "T1_final_only",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q12",
+      "treatment": "T1_final_only",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.3333333333333333,
+      "stable": 0,
+      "answers": [
+        "E",
+        "E",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q12",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q12",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.6666666666666666,
+      "stable": 0,
+      "answers": [
+        "A",
+        "D",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q12",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q12",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.3333333333333333,
+      "stable": 0,
+      "answers": [
+        "A",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q12",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q12",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.6666666666666666,
+      "stable": 0,
+      "answers": [
+        "B",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q12",
+      "treatment": "T5_self_check",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "E",
+        "E",
+        "E"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q12",
+      "treatment": "T5_self_check",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.3333333333333333,
+      "stable": 0,
+      "answers": [
+        "D",
+        "A",
+        null
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q13",
+      "treatment": "T0_normal",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q13",
+      "treatment": "T0_normal",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 0,
+      "answers": [
+        "D",
+        "A",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q13",
+      "treatment": "T1_final_only",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q13",
+      "treatment": "T1_final_only",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 0,
+      "answers": [
+        "D",
+        "D",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q13",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q13",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.6666666666666666,
+      "stable": 0,
+      "answers": [
+        null,
+        "A",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q13",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q13",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 0,
+      "answers": [
+        "D",
+        "D",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q13",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q13",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 0,
+      "answers": [
+        "A",
+        "D",
+        "B"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q13",
+      "treatment": "T5_self_check",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q13",
+      "treatment": "T5_self_check",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 0,
+      "answers": [
+        "D",
+        "A",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q14",
+      "treatment": "T0_normal",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q14",
+      "treatment": "T0_normal",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "D",
+        "B",
+        "B"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q14",
+      "treatment": "T1_final_only",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q14",
+      "treatment": "T1_final_only",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q14",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q14",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q14",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q14",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "A",
+        "A",
+        "B"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q14",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q14",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "B",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q14",
+      "treatment": "T5_self_check",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "E",
+        "E",
+        "E"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q14",
+      "treatment": "T5_self_check",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q15",
+      "treatment": "T0_normal",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q15",
+      "treatment": "T0_normal",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.6666666666666666,
+      "stable": 0,
+      "answers": [
+        "A",
+        "A",
+        "C"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q15",
+      "treatment": "T1_final_only",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q15",
+      "treatment": "T1_final_only",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.6666666666666666,
+      "stable": 0,
+      "answers": [
+        "A",
+        "A",
+        "B"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q15",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q15",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.6666666666666666,
+      "stable": 0,
+      "answers": [
+        "A",
+        "C",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q15",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q15",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "B",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q15",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q15",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.3333333333333333,
+      "stable": 0,
+      "answers": [
+        "D",
+        "D",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q15",
+      "treatment": "T5_self_check",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q15",
+      "treatment": "T5_self_check",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        null,
+        "D",
+        null
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q17",
+      "treatment": "T0_normal",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q17",
+      "treatment": "T0_normal",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.6666666666666666,
+      "stable": 0,
+      "answers": [
+        "A",
+        "A",
+        "B"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q17",
+      "treatment": "T1_final_only",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q17",
+      "treatment": "T1_final_only",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q17",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q17",
+      "treatment": "T2_step_by_step",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q17",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 1,
+      "answers": [
+        "D",
+        "D",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q17",
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.0,
+      "stable": 0,
+      "answers": [
+        "E",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q17",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q17",
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.6666666666666666,
+      "stable": 0,
+      "answers": [
+        "A",
+        null,
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q17",
+      "treatment": "T5_self_check",
+      "temperature": 0.0,
+      "k": 3,
+      "accuracy": 1.0,
+      "stable": 1,
+      "answers": [
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    {
+      "question_id": "BIOC406_Exam1A_Q17",
+      "treatment": "T5_self_check",
+      "temperature": 0.7,
+      "k": 3,
+      "accuracy": 0.6666666666666666,
+      "stable": 0,
+      "answers": [
+        "A",
+        "A",
+        "D"
+      ]
+    }
+  ],
+  "by_config": [
+    {
+      "treatment": "T0_normal",
+      "temperature": 0.0,
+      "n_questions": 10,
+      "mean_accuracy": 0.4,
+      "stability_rate": 0.9
+    },
+    {
+      "treatment": "T0_normal",
+      "temperature": 0.7,
+      "n_questions": 10,
+      "mean_accuracy": 0.3333333333333333,
+      "stability_rate": 0.1
+    },
+    {
+      "treatment": "T1_final_only",
+      "temperature": 0.0,
+      "n_questions": 10,
+      "mean_accuracy": 0.4,
+      "stability_rate": 0.8
+    },
+    {
+      "treatment": "T1_final_only",
+      "temperature": 0.7,
+      "n_questions": 10,
+      "mean_accuracy": 0.36666666666666664,
+      "stability_rate": 0.4
+    },
+    {
+      "treatment": "T2_step_by_step",
+      "temperature": 0.0,
+      "n_questions": 10,
+      "mean_accuracy": 0.3,
+      "stability_rate": 1.0
+    },
+    {
+      "treatment": "T2_step_by_step",
+      "temperature": 0.7,
+      "n_questions": 10,
+      "mean_accuracy": 0.4333333333333333,
+      "stability_rate": 0.4
+    },
+    {
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.0,
+      "n_questions": 10,
+      "mean_accuracy": 0.2,
+      "stability_rate": 0.9
+    },
+    {
+      "treatment": "T3_use_options_as_background",
+      "temperature": 0.7,
+      "n_questions": 10,
+      "mean_accuracy": 0.36666666666666664,
+      "stability_rate": 0.1
+    },
+    {
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.0,
+      "n_questions": 10,
+      "mean_accuracy": 0.2,
+      "stability_rate": 1.0
+    },
+    {
+      "treatment": "T4_step_by_step_with_background",
+      "temperature": 0.7,
+      "n_questions": 10,
+      "mean_accuracy": 0.4666666666666667,
+      "stability_rate": 0.2
+    },
+    {
+      "treatment": "T5_self_check",
+      "temperature": 0.0,
+      "n_questions": 10,
+      "mean_accuracy": 0.2,
+      "stability_rate": 0.7
+    },
+    {
+      "treatment": "T5_self_check",
+      "temperature": 0.7,
+      "n_questions": 10,
+      "mean_accuracy": 0.2,
+      "stability_rate": 0.1
+    }
+  ]
+}

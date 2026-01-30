@@ -1,0 +1,3 @@
+pdfplumber
+pymupdf
+gpt4all

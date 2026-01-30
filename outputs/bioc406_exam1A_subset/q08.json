@@ -1,0 +1,20 @@
+{
+  "id": "BIOC406_Exam1A_Q08",
+  "question": "Free ammonia is captured by synthesis of (1) , an amino acid, and then transferred to the amino acid (2) . This amino acid (2) provides amino groups for amino acid synthesis.",
+  "choices": {
+    "A": "1=glutamate; 2=glutamine.",
+    "B": "1=glutamate; 2=glutamate.",
+    "C": "1=glutamine; 2=glutamine.",
+    "D": "1=glutamine; 2=glutamate.",
+    "E": "Ammonia cannot be incorporated into amino acids."
+  },
+  "answer": [
+    "D"
+  ],
+  "answer_format": "letters",
+  "source": {
+    "exam_pdf": "data/406_exam 1_A.pdf",
+    "key_pdf": "data/406_exam 1_A KEY_UPDATED.pdf",
+    "question_number": 8
+  }
+}

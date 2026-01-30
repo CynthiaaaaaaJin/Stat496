@@ -1,0 +1,20 @@
+{
+  "id": "BIOC406_Exam1A_Q17",
+  "question": "What would you expect to happen to cellular lipid levels if you add a drug that increases the activity of phosphatidic acid phosphatase (lipin)?",
+  "choices": {
+    "A": "Increased accumulation of triacylglycerol.",
+    "B": "Increased production of membrane phospholipids.",
+    "C": "Increased amount of phosphatidic acid.",
+    "D": "Increased production of sphingolipids.",
+    "E": "Increased synthesis of cholesterol. Page 6 A Biochemistry 406 Jan. 26, 2026 Exam 1 - Version"
+  },
+  "answer": [
+    "A"
+  ],
+  "answer_format": "letters",
+  "source": {
+    "exam_pdf": "data/406_exam 1_A.pdf",
+    "key_pdf": "data/406_exam 1_A KEY_UPDATED.pdf",
+    "question_number": 17
+  }
+}

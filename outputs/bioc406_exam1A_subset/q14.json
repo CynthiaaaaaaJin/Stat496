@@ -1,0 +1,20 @@
+{
+  "id": "BIOC406_Exam1A_Q14",
+  "question": "Which of these is NOT a source for amino acid carbon skeletons in mammals?",
+  "choices": {
+    "A": "Glycolysis",
+    "B": "Pyruvate",
+    "C": "PPP (pentose phosphate pathway)",
+    "D": "TCA cycle",
+    "E": "All of these can be used to generate carbon skeletons. Page 5 A Biochemistry 406 Jan. 26, 2026 Exam 1 - Version"
+  },
+  "answer": [
+    "C"
+  ],
+  "answer_format": "letters",
+  "source": {
+    "exam_pdf": "data/406_exam 1_A.pdf",
+    "key_pdf": "data/406_exam 1_A KEY_UPDATED.pdf",
+    "question_number": 14
+  }
+}

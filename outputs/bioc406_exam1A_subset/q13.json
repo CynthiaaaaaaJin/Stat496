@@ -1,0 +1,23 @@
+{
+  "id": "BIOC406_Exam1A_Q13",
+  "question": "Which of these fatty acids is synthesized using BOTH a desaturase AND an elongase in plants?",
+  "choices": {
+    "A": "C18:1(D9)",
+    "B": "C18:2(D6, 9)",
+    "C": "C20:0",
+    "D": "C20:1(D9)",
+    "E": "C20:2(D6, 9)"
+  },
+  "answer": [
+    "A",
+    "B",
+    "D",
+    "E"
+  ],
+  "answer_format": "letters",
+  "source": {
+    "exam_pdf": "data/406_exam 1_A.pdf",
+    "key_pdf": "data/406_exam 1_A KEY_UPDATED.pdf",
+    "question_number": 13
+  }
+}

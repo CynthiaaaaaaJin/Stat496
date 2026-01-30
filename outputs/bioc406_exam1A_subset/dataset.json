@@ -1,0 +1,102 @@
+[
+  {
+    "id": "BIOC406_Exam1A_Q06",
+    "question": "In 1982, a 42-year-old patient was hospitalized in San Jose, frozen like a statue. Then two drug-addict brothers in their 20s were reported to have advanced symptoms of Parkinson’s. All these patients had consumed the same illegal street drug, which turned out to have an impurity. The patients were given L-DOPA, which alleviated their motor symptoms. Based on these data, which of these neurotransmission pathways can you infer were NOT disrupted by the impurity?",
+    "choices": {
+      "A": "Norepinephrine",
+      "B": "Serotonin",
+      "C": "Dopamine",
+      "D": "Epinephrine",
+      "E": "All of these have been altered."
+    },
+    "answer": [
+      "B"
+    ],
+    "answer_format": "letters",
+    "source": {
+      "exam_pdf": "data/406_exam 1_A.pdf",
+      "key_pdf": "data/406_exam 1_A KEY_UPDATED.pdf",
+      "question_number": 6
+    }
+  },
+  {
+    "id": "BIOC406_Exam1A_Q08",
+    "question": "Free ammonia is captured by synthesis of (1) , an amino acid, and then transferred to the amino acid (2) . This amino acid (2) provides amino groups for amino acid synthesis.",
+    "choices": {
+      "A": "1=glutamate; 2=glutamine.",
+      "B": "1=glutamate; 2=glutamate.",
+      "C": "1=glutamine; 2=glutamine.",
+      "D": "1=glutamine; 2=glutamate.",
+      "E": "Ammonia cannot be incorporated into amino acids."
+    },
+    "answer": [
+      "D"
+    ],
+    "answer_format": "letters",
+    "source": {
+      "exam_pdf": "data/406_exam 1_A.pdf",
+      "key_pdf": "data/406_exam 1_A KEY_UPDATED.pdf",
+      "question_number": 8
+    }
+  },
+  {
+    "id": "BIOC406_Exam1A_Q14",
+    "question": "Which of these is NOT a source for amino acid carbon skeletons in mammals?",
+    "choices": {
+      "A": "Glycolysis",
+      "B": "Pyruvate",
+      "C": "PPP (pentose phosphate pathway)",
+      "D": "TCA cycle",
+      "E": "All of these can be used to generate carbon skeletons. Page 5 A Biochemistry 406 Jan. 26, 2026 Exam 1 - Version"
+    },
+    "answer": [
+      "C"
+    ],
+    "answer_format": "letters",
+    "source": {
+      "exam_pdf": "data/406_exam 1_A.pdf",
+      "key_pdf": "data/406_exam 1_A KEY_UPDATED.pdf",
+      "question_number": 14
+    }
+  },
+  {
+    "id": "BIOC406_Exam1A_Q15",
+    "question": "Which of these statements about biological nitrogen fixing is TRUE?",
+    "choices": {
+      "A": "The reduction of N to NH occurs at the FeMo cofactor. 2 3",
+      "B": "The P-cluster dissociates after each electron is transferred to the FeMo cofactor.",
+      "C": "ATP hydrolysis stimulates the reduction of N to NH . 2 3",
+      "D": "The reduction of N to NH occurs when 6 electrons have collected at the FeMo 2 3 cofactor.",
+      "E": "Reduction of the dinitrogen reductase (Fe-protein) requires ATP hydrolysis."
+    },
+    "answer": [
+      "A"
+    ],
+    "answer_format": "letters",
+    "source": {
+      "exam_pdf": "data/406_exam 1_A.pdf",
+      "key_pdf": "data/406_exam 1_A KEY_UPDATED.pdf",
+      "question_number": 15
+    }
+  },
+  {
+    "id": "BIOC406_Exam1A_Q17",
+    "question": "What would you expect to happen to cellular lipid levels if you add a drug that increases the activity of phosphatidic acid phosphatase (lipin)?",
+    "choices": {
+      "A": "Increased accumulation of triacylglycerol.",
+      "B": "Increased production of membrane phospholipids.",
+      "C": "Increased amount of phosphatidic acid.",
+      "D": "Increased production of sphingolipids.",
+      "E": "Increased synthesis of cholesterol. Page 6 A Biochemistry 406 Jan. 26, 2026 Exam 1 - Version"
+    },
+    "answer": [
+      "A"
+    ],
+    "answer_format": "letters",
+    "source": {
+      "exam_pdf": "data/406_exam 1_A.pdf",
+      "key_pdf": "data/406_exam 1_A KEY_UPDATED.pdf",
+      "question_number": 17
+    }
+  }
+]

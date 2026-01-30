@@ -1,0 +1,20 @@
+{
+  "id": "BIOC406_Exam1A_Q06",
+  "question": "In 1982, a 42-year-old patient was hospitalized in San Jose, frozen like a statue. Then two drug-addict brothers in their 20s were reported to have advanced symptoms of Parkinson’s. All these patients had consumed the same illegal street drug, which turned out to have an impurity. The patients were given L-DOPA, which alleviated their motor symptoms. Based on these data, which of these neurotransmission pathways can you infer were NOT disrupted by the impurity?",
+  "choices": {
+    "A": "Norepinephrine",
+    "B": "Serotonin",
+    "C": "Dopamine",
+    "D": "Epinephrine",
+    "E": "All of these have been altered."
+  },
+  "answer": [
+    "B"
+  ],
+  "answer_format": "letters",
+  "source": {
+    "exam_pdf": "data/406_exam 1_A.pdf",
+    "key_pdf": "data/406_exam 1_A KEY_UPDATED.pdf",
+    "question_number": 6
+  }
+}

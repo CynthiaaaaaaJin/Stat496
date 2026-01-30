@@ -1,0 +1,20 @@
+{
+  "id": "BIOC406_Exam1A_Q12",
+  "question": "Folate (vitamin B9) deficiency can lead to megaloblastic anemia, where red blood cells become abnormally large. You see a patient with severe megaloblastic anemia even though they have eaten spinach (a good source of folate) daily for several weeks. Which of these could explain this observation?",
+  "choices": {
+    "A": "A defect in dihydrofolate reductase (DHFR).",
+    "B": "Accumulation of S-adenosylmethionine.",
+    "C": "Decreased expression of intrinsic factor.",
+    "D": "Increased production of glutathione.",
+    "E": "Decreased activity of pancreatic lipase."
+  },
+  "answer": [
+    "A"
+  ],
+  "answer_format": "letters",
+  "source": {
+    "exam_pdf": "data/406_exam 1_A.pdf",
+    "key_pdf": "data/406_exam 1_A KEY_UPDATED.pdf",
+    "question_number": 12
+  }
+}
