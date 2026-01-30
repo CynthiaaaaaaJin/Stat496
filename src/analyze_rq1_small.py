@@ -1,74 +1,84 @@
+import argparse
 import json
-from collections import defaultdict, Counter
+import re
+from collections import defaultdict
 
-IN_PATH = "outputs/rq1_small_outputs.jsonl"
+import pandas as pd
+
+
+FINAL_RE = re.compile(r"Final:\s*([A-E])", re.IGNORECASE)
+
+
+def read_jsonl(path: str):
+    rows = []
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                rows.append(json.loads(line))
+    return rows
+
+
+def read_answers_jsonl(path: str):
+    ans = {}
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            obj = json.loads(line)
+            ans[obj["qid"]] = obj["answer"].upper()
+    return ans
+
 
 def main():
-    rows = []
-    with open(IN_PATH, "r", encoding="utf-8") as f:
-        for line in f:
-            rows.append(json.loads(line))
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--preds", default="outputs/rq1_small_outputs.jsonl")
+    ap.add_argument("--answers", default="data/apchem_answers_sample_10.jsonl")
+    args = ap.parse_args()
 
-    if not rows:
-        print("No rows found. Did the runner write outputs?")
-        return
+    rows = read_jsonl(args.preds)
+    ans = read_answers_jsonl(args.answers)
 
-    # Accuracy by condition
-    acc = defaultdict(lambda: {"n": 0, "correct": 0, "tokens": 0, "errors": 0})
-    preds_by = defaultdict(list)  # (qid, treatment, temp) -> list of preds
+    df = pd.DataFrame(rows)
+    df["gold"] = df["qid"].map(ans)
+    df["correct"] = (df["pred"] == df["gold"]).astype(int)
 
-    for r in rows:
-        key = (r["treatment"], r["temperature"])
-        acc[key]["n"] += 1
-        if r.get("error"):
-            acc[key]["errors"] += 1
+    # token cost proxy (Gemini provides total_token_count, GPT4All may be missing)
+    def get_total_tokens(u):
+        if not isinstance(u, dict):
+            return None
+        return u.get("total_token_count")
 
-        gold = (r.get("gold") or "").strip().upper()
-        pred = (r.get("pred") or "").strip().upper()
+    df["total_tokens"] = df["usage"].apply(get_total_tokens)
 
-        if gold and pred and gold == pred:
-            acc[key]["correct"] += 1
+    # Accuracy per condition
+    acc = df.groupby(["treatment", "temperature"])["correct"].mean().reset_index()
+    acc = acc.sort_values(["temperature", "treatment"])
 
-        usage = r.get("usage") or {}
-        # usage may be object-like; handle dict only
-        if isinstance(usage, dict):
-            total_tokens = usage.get("total_tokens") or usage.get("totalTokenCount") or 0
-            acc[key]["tokens"] += int(total_tokens) if str(total_tokens).isdigit() else 0
+    # Stability: per qid/treatment/temp, check if all repeats same pred
+    stab_rows = []
+    for (qid, tr, temp), sub in df.groupby(["qid", "treatment", "temperature"]):
+        preds = list(sub["pred"])
+        stable = int(len(set(preds)) == 1 and preds[0] != "")
+        stab_rows.append({"qid": qid, "treatment": tr, "temperature": temp, "stable": stable})
 
-        preds_by[(r["qid"], r["treatment"], r["temperature"])].append(pred)
+    stab = pd.DataFrame(stab_rows).groupby(["treatment", "temperature"])["stable"].mean().reset_index()
 
-    print("\n=== Accuracy / Cost summary by (treatment, temperature) ===")
-    for key in sorted(acc.keys()):
-        n = acc[key]["n"]
-        correct = acc[key]["correct"]
-        errors = acc[key]["errors"]
-        tokens = acc[key]["tokens"]
-        print(f"{key}: acc={correct}/{n}={correct/n:.2f} | errors={errors} | total_tokens={tokens}")
+    # Avg token cost (if available)
+    tok = df.groupby(["treatment", "temperature"])["total_tokens"].mean().reset_index()
 
-    # Stability (only meaningful if REPEATS >= 2)
-    stable_n = 0
-    total_groups = 0
-    for k, preds in preds_by.items():
-        # ignore empty predictions when checking stability
-        preds_clean = [p for p in preds if p]
-        if len(preds) <= 1:
-            continue
-        total_groups += 1
-        if len(set(preds_clean)) == 1 and len(preds_clean) == len(preds):
-            stable_n += 1
+    merged = acc.merge(stab, on=["treatment", "temperature"], how="left").merge(tok, on=["treatment", "temperature"], how="left")
+    merged = merged.rename(columns={"correct": "accuracy", "stable": "stability", "total_tokens": "avg_total_tokens"})
 
-    print("\n=== Stability (requires repeats>=2) ===")
-    if total_groups == 0:
-        print("Not enough repeats to compute stability. Set REPEATS=2 in run script next.")
-    else:
-        print(f"Stable groups: {stable_n}/{total_groups} = {stable_n/total_groups:.2f}")
+    print("\n=== RQ1 Small Test Summary ===")
+    print(merged.to_string(index=False))
 
-    # Variety check: distribution of predicted letters per condition
-    print("\n=== Variety check: distribution of predicted letters per condition ===")
-    for key in sorted(acc.keys()):
-        letters = [r.get("pred","") for r in rows if (r["treatment"], r["temperature"]) == key]
-        c = Counter([x for x in letters if x])
-        print(f"{key}: {dict(c)}")
+    # Variety check: distribution of predicted letters
+    print("\n=== Variety Check: Pred letter distribution ===")
+    dist = df.groupby(["treatment", "temperature", "pred"]).size().reset_index(name="count")
+    print(dist.to_string(index=False))
+
 
 if __name__ == "__main__":
     main()

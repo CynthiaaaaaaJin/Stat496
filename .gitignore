@@ -1,5 +1,6 @@
-.env
-outputs/*.jsonl
+outputs/*
+!.gitkeep
 __pycache__/
 *.pyc
+.env
 .DS_Store
