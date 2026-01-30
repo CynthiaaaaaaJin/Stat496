@@ -1,83 +1,118 @@
-import argparse
 import json
 import re
-from collections import defaultdict
+from pathlib import Path
 
 import pandas as pd
 
 
-FINAL_RE = re.compile(r"Final:\s*([A-E])", re.IGNORECASE)
+FINAL_RE = re.compile(r"Final\s*:\s*([A-E])", re.IGNORECASE)
 
-
-def read_jsonl(path: str):
+def read_jsonl(path: Path) -> pd.DataFrame:
     rows = []
-    with open(path, "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if line:
-                rows.append(json.loads(line))
-    return rows
-
-
-def read_answers_jsonl(path: str):
-    ans = {}
-    with open(path, "r", encoding="utf-8") as f:
+    with path.open("r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if not line:
                 continue
-            obj = json.loads(line)
-            ans[obj["qid"]] = obj["answer"].upper()
-    return ans
+            rows.append(json.loads(line))
+    return pd.DataFrame(rows)
 
+def extract_pred(row) -> str | None:
+    # Prefer explicit pred field if present and valid
+    pred = row.get("pred", None)
+    if isinstance(pred, str):
+        pred = pred.strip().upper()
+        if pred in ["A","B","C","D","E"]:
+            return pred
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--preds", default="outputs/rq1_small_outputs.jsonl")
-    ap.add_argument("--answers", default="data/apchem_answers_sample_10.jsonl")
-    args = ap.parse_args()
+    # Otherwise parse from raw_text
+    raw = row.get("raw_text", "") or ""
+    m = FINAL_RE.search(raw)
+    if m:
+        return m.group(1).upper()
 
-    rows = read_jsonl(args.preds)
-    ans = read_answers_jsonl(args.answers)
+    return None
 
-    df = pd.DataFrame(rows)
-    df["gold"] = df["qid"].map(ans)
-    df["correct"] = (df["pred"] == df["gold"]).astype(int)
+def main(
+    data_path="data/apchem_60.jsonl",
+    outputs_path="outputs/rq1_outputs.jsonl",
+    out_csv="outputs/analysis_summary.csv",
+):
+    data_path = Path(data_path)
+    outputs_path = Path(outputs_path)
 
-    # token cost proxy (Gemini provides total_token_count, GPT4All may be missing)
-    def get_total_tokens(u):
-        if not isinstance(u, dict):
-            return None
-        return u.get("total_token_count")
+    df_data = read_jsonl(data_path)
+    df_out = read_jsonl(outputs_path)
 
-    df["total_tokens"] = df["usage"].apply(get_total_tokens)
+    # ensure types
+    df_data["qid"] = df_data["qid"].astype(int)
+    df_out["qid"] = df_out["qid"].astype(int)
 
-    # Accuracy per condition
-    acc = df.groupby(["treatment", "temperature"])["correct"].mean().reset_index()
-    acc = acc.sort_values(["temperature", "treatment"])
+    # get gold
+    if "gold" not in df_data.columns:
+        raise ValueError("Your data jsonl must contain a 'gold' field per row (A-E).")
 
-    # Stability: per qid/treatment/temp, check if all repeats same pred
-    stab_rows = []
-    for (qid, tr, temp), sub in df.groupby(["qid", "treatment", "temperature"]):
-        preds = list(sub["pred"])
-        stable = int(len(set(preds)) == 1 and preds[0] != "")
-        stab_rows.append({"qid": qid, "treatment": tr, "temperature": temp, "stable": stable})
+    df_data["gold"] = df_data["gold"].astype(str).str.strip().str.upper()
+    df_data.loc[~df_data["gold"].isin(["A","B","C","D","E"]), "gold"] = None
 
-    stab = pd.DataFrame(stab_rows).groupby(["treatment", "temperature"])["stable"].mean().reset_index()
+    # extract prediction
+    df_out["pred_extracted"] = df_out.apply(lambda r: extract_pred(r), axis=1)
 
-    # Avg token cost (if available)
-    tok = df.groupby(["treatment", "temperature"])["total_tokens"].mean().reset_index()
+    # merge on qid
+    df = df_out.merge(df_data[["qid", "gold"]], on="qid", how="left")
 
-    merged = acc.merge(stab, on=["treatment", "temperature"], how="left").merge(tok, on=["treatment", "temperature"], how="left")
-    merged = merged.rename(columns={"correct": "accuracy", "stable": "stability", "total_tokens": "avg_total_tokens"})
+    # compute correctness
+    df["is_correct"] = (df["pred_extracted"] == df["gold"])
+    df["has_gold"] = df["gold"].notna()
+    df["has_pred"] = df["pred_extracted"].notna()
 
-    print("\n=== RQ1 Small Test Summary ===")
-    print(merged.to_string(index=False))
+    # -------- summary prints --------
+    n = len(df)
+    print(f"Rows in outputs: {n}")
+    print(f"Rows with gold available: {df['has_gold'].sum()} / {n}")
+    print(f"Rows with a parsable prediction: {df['has_pred'].sum()} / {n}")
 
-    # Variety check: distribution of predicted letters
-    print("\n=== Variety Check: Pred letter distribution ===")
-    dist = df.groupby(["treatment", "temperature", "pred"]).size().reset_index(name="count")
-    print(dist.to_string(index=False))
+    # Overall accuracy (only where gold exists and prediction exists)
+    valid = df[df["has_gold"] & df["has_pred"]]
+    if len(valid) == 0:
+        print("No valid rows to score (missing gold or pred).")
+        return
+
+    overall_acc = valid["is_correct"].mean()
+    print(f"\nOverall accuracy (scorable rows only): {overall_acc:.3f}  (n={len(valid)})")
+
+    # Accuracy by treatment/temp
+    group_cols = []
+    if "treatment" in df.columns:
+        group_cols.append("treatment")
+    if "temperature" in df.columns:
+        group_cols.append("temperature")
+
+    if group_cols:
+        summary = (
+            valid.groupby(group_cols)
+            .agg(
+                n=("is_correct", "size"),
+                acc=("is_correct", "mean"),
+                missing_pred=("has_pred", lambda s: (~s).sum()),
+            )
+            .reset_index()
+            .sort_values(group_cols)
+        )
+        print("\nAccuracy by " + ", ".join(group_cols) + ":")
+        print(summary.to_string(index=False))
+        Path(out_csv).parent.mkdir(parents=True, exist_ok=True)
+        summary.to_csv(out_csv, index=False)
+        print(f"\nSaved summary CSV to: {out_csv}")
+
+    # Optional: show most common failure reasons
+    # rows where pred missing or gold missing
+    miss_pred = df[df["has_gold"] & (~df["has_pred"])]
+    if len(miss_pred) > 0:
+        print(f"\nWARNING: {len(miss_pred)} rows had gold but no parsable 'Final: X'.")
+        # show a few examples
+        cols = [c for c in ["qid","treatment","temperature","raw_text"] if c in df.columns]
+        print(miss_pred[cols].head(5).to_string(index=False))
 
 
 if __name__ == "__main__":

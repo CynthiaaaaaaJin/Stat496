@@ -35,7 +35,7 @@ def main():
     ap.add_argument("--backend", choices=["gemini", "gpt4all"], default="gemini")
     ap.add_argument("--model", type=str, default="models/gemini-flash-latest",
                     help="Gemini: model name like models/gemini-flash-latest | GPT4All: path to .gguf")
-    ap.add_argument("--data", type=str, default="data/apchem_sample_10.jsonl")
+    ap.add_argument("--data", type=str, default="data/apchem_60.jsonl")
     ap.add_argument("--out", type=str, default="outputs/rq1_small_outputs.jsonl")
     ap.add_argument("--treatments", nargs="+", default=["T0", "T1", "T2", "T3", "T4"])
     ap.add_argument("--temps", nargs="+", type=float, default=[0.2, 1.0])
