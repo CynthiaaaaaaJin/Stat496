@@ -11,7 +11,7 @@ Outputs:
 
 import os, re, json
 import pdfplumber
-import fitz  # PyMuPDF
+import fitz
 
 TARGET_QS = [6, 8, 14, 15, 17]
 
@@ -143,7 +143,6 @@ def infer_answer_letters(highlight_texts):
     return out
 
 def main():
-    # If your PDFs are in a different folder, update these two lines:
     exam_pdf = "data/406_exam 1_A.pdf"
     key_pdf  = "data/406_exam 1_A KEY_UPDATED.pdf"
 
