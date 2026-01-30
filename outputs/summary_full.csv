@@ -1,0 +1,3 @@
+config_id,n_runs,accuracy,stability,avg_tokens_per_run
+T0_temp0.2,10,0.5,1.0,89.25
+T5_temp0.2,10,0.5,1.0,105.35

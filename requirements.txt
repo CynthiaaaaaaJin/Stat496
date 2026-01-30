@@ -1,8 +1,4 @@
-google-genai>=1.6.0
-tqdm>=4.66.0
+gpt4all>=2.7.0
+pymupdf>=1.24.0
 pandas>=2.0.0
-gpt4all>=2.8.2
-pymupdf
-pdfplumber
-pandas
-tqdm
+tqdm>=4.66.0

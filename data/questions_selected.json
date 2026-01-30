@@ -1,0 +1,112 @@
+[
+  {
+    "qid": "6",
+    "stem": "In 1982, a 42-year-old patient was hospitalized in San Jose, frozen like a statue. Then two drug-addict brothers in their 20s were reported to have advanced symptoms of Parkinson’s. All these patients had consumed the same illegal street drug, which turned out to have an impurity. The patients were given L-DOPA, which alleviated their motor symptoms. Based on these data, which of these neurotransmission pathways can you infer were NOT disrupted by the impurity?",
+    "options": {
+      "A": "Norepinephrine",
+      "B": "Serotonin",
+      "C": "Dopamine",
+      "D": "Epinephrine",
+      "E": "All of these have been altered."
+    }
+  },
+  {
+    "qid": "8",
+    "stem": "Free ammonia is captured by synthesis of   (1)  , an amino acid, and then transferred to the amino acid   (2)  . This amino acid (2) provides amino groups for amino acid synthesis.",
+    "options": {
+      "A": "1=glutamate; 2=glutamine.",
+      "B": "1=glutamate; 2=glutamate.",
+      "C": "1=glutamine; 2=glutamine.",
+      "D": "1=glutamine; 2=glutamate.",
+      "E": "Ammonia cannot be incorporated into amino acids."
+    }
+  },
+  {
+    "qid": "9",
+    "stem": "You keep a pet rat, Poppy, in your room. You come home after a long day, and Poppy is hungry – he hasn’t eaten in almost 12 hours. When you open the door to the cabinet where you store the rat food, your cat jumps out lunges toward Poppy. Poppy is scared and has clearly activated the “fight or flight” response, and his blood glucose levels rise rapidly. Which combination of molecular responses has been activated in Poppy’s tissues?",
+    "options": {
+      "A": "↑ AMPK activity, ↓ mTOR activity, ↓ fructose-2,6-bisphosphate, ↑ glycogen synthase activity",
+      "B": "↑ cAMP, ↑ PKA activity, ↓ fructose-2,6-bisphosphate, ↑ gluconeogenesis",
+      "C": "↑ insulin signaling, ↑ PI3K activation, ↑ GLUT4 translocation, ↑ gluconeogenesis",
+      "D": "↓ AMPK activity, ↑ mTOR activity, ↑ glycolysis, ↑ glycogen synthesis",
+      "E": "↑ cAMP, ↑ mTOR activation, ↑ fatty acid synthesis, ↓ glycogen synthase activity"
+    }
+  },
+  {
+    "qid": "10",
+    "stem": "Hartnup disease is a genetic syndrome in which there is an inactivating mutation in a gene required for the absorption of tryptophan. Based on this information, which of these drugs might help treat the neurological symptoms of patients with Hartnup disease?",
+    "options": {
+      "A": "A selective serotonin reuptake inhibitor (SSRI).",
+      "B": "A dopamine reuptake inhibitor.",
+      "C": "An antihistamine.",
+      "D": "Reserpine, which depletes monoamines from synaptic vesicles.",
+      "E": "A GPCR inhibitor. Biochemistry 406 Jan. 26, 2026 Exam 1  -  Version A Page 5"
+    }
+  },
+  {
+    "qid": "11",
+    "stem": "Biotin is attached to carboxylase enzymes through the action of a biotin-ligating protein. Which of these would occur if you inhibited the activity of the biotin-ligating protein in rodents?",
+    "options": {
+      "A": "Fatty acid oxidation would be inhibited.",
+      "B": "Acetyl-CoA would accumulate in the cytoplasm.",
+      "C": "Palmitate would accumulate.",
+      "D": "Malonyl CoA would accumulate.",
+      "E": "TAG synthesis would increase."
+    }
+  },
+  {
+    "qid": "12",
+    "stem": "Folate (vitamin B9) deficiency can lead to megaloblastic anemia, where red blood cells become abnormally large. You see a patient with severe megaloblastic anemia even though they have eaten spinach (a good source of folate) daily for several weeks. Which of these could explain this observation?",
+    "options": {
+      "A": "A defect in dihydrofolate reductase (DHFR).",
+      "B": "Accumulation of S-adenosylmethionine.",
+      "C": "Decreased expression of intrinsic factor.",
+      "D": "Increased production of glutathione.",
+      "E": "Decreased activity of pancreatic lipase."
+    }
+  },
+  {
+    "qid": "13",
+    "stem": "Which of these fatty acids is synthesized using BOTH a desaturase AND an elongase in plants?",
+    "options": {
+      "A": "C18:1(D9)",
+      "B": "C18:2(D6, 9)",
+      "C": "C20:0",
+      "D": "C20:1(D9)",
+      "E": "C20:2(D6, 9)"
+    }
+  },
+  {
+    "qid": "14",
+    "stem": "Which of these is NOT a source for amino acid carbon skeletons in mammals?",
+    "options": {
+      "A": "Glycolysis",
+      "B": "Pyruvate",
+      "C": "PPP (pentose phosphate pathway)",
+      "D": "TCA cycle",
+      "E": "All of these can be used to generate carbon skeletons. Biochemistry 406 Jan. 26, 2026 Exam 1  -  Version A Page 6"
+    }
+  },
+  {
+    "qid": "15",
+    "stem": "Which of these statements about biological nitrogen fixing is TRUE?",
+    "options": {
+      "A": "The reduction of N2 to NH3 occurs at the FeMo cofactor.",
+      "B": "The P-cluster dissociates after each electron is transferred to the FeMo cofactor.",
+      "C": "ATP hydrolysis stimulates the reduction of N2 to NH3.",
+      "D": "The reduction of N2 to NH3 occurs when 6 electrons have collected at the FeMo cofactor.",
+      "E": "Reduction of the dinitrogen reductase (Fe-protein) requires ATP hydrolysis."
+    }
+  },
+  {
+    "qid": "17",
+    "stem": "What would you expect to happen to cellular lipid levels if you add a drug that increases the activity of phosphatidic acid phosphatase (lipin)?",
+    "options": {
+      "A": "Increased accumulation of triacylglycerol.",
+      "B": "Increased production of membrane phospholipids.",
+      "C": "Increased amount of phosphatidic acid.",
+      "D": "Increased production of sphingolipids.",
+      "E": "Increased synthesis of cholesterol. Biochemistry 406 Jan. 26, 2026 Exam 1  -  Version A Page 7"
+    }
+  }
+]

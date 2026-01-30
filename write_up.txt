@@ -1,0 +1,68 @@
+**What prompts we used**
+(1) 
+For this test experiment, we tested two prompt styles:
+- T0 (Normal): just answer the question normally.
+- T5 (Self-check): answer, then do a short internal “double check,” and finally commit to one answer.
+
+(2)
+To make scoring easy, we forced a strict output format:
+- The first line must be: FINAL: A/B/C/D/E
+- The rest of the response could include explanation (except when we force “final only”).
+That way, even if the model talks a lot, we can reliably extract the final letter.
+
+
+**What kinds of responses we got**
+The clearest pattern is that temperature matters more than prompt style in this small run.
+
+At temp = 0.2
+- For T0, the model was extremely consistent: most questions had strict_stable=True, mode frequency was often 1.0, and entropy was basically 0.
+- In plain language: the model usually made the same choice every time when temperature was low.
+
+At temp = 0.7
+- Stability clearly dropped. More questions became unstable (strict_stable=False), with mode frequency often 0.6667 or 0.3333, and entropy jumping to values like 0.9183 or 1.585.
+- In plain language: at higher temperature, the model “changes its mind” more often.
+
+**How might we improve the experiment**
+T5 (self-check) didn’t clearly improve things
+- We expected T5 to improve accuracy and maybe stability, but the results were mixed.
+- In some questions it helped, but overall it didn’t reliably increase correctness, and it also didn’t consistently stabilize answers compared to T0.
+- With only 10 questions, it’s hard to say if the difference is real or just noise.
+
+This run is useful as a starting point, but it has big limitations:
+1) Too few questions (10 is small). A couple of weird questions can dominate the conclusion.
+2) Too few repeats (K=3 gives only rough stability estimates).
+3) We should double-check the dataset extraction/ground truth for a few questions manually, just to make sure the answer key mapping is clean.
+4) Token cost isn’t fully measured yet (depends on whether the backend reports token counts), so we can’t cleanly answer cost vs performance yet.
+
+**What variables we plan to vary next**
+(1) 
+Prompt:
+- Add more treatments (like step-by-step reasoning prompts, final-only prompts, restricted-context prompts).
+- Try few-shot examples (show 1–2 examples of the expected output format).
+- Possibly ask the model for confidence (then we can test whether confidence predicts correctness).
+(2)
+Decoding:
+- Add more temperatures: 0.0, 0.2, 0.5, 0.7, 1.0
+- Also vary top_p and maybe use fixed seeds to separate “randomness from sampling” vs “randomness from model behavior.”
+(3)
+Model:
+- Run the same experiment on a second model (or a different quantization) to see whether these trends generalize.
+
+**How we’ll expand this starting experiment**
+- Increase the dataset to 50–200 questions (multiple exams or multiple sections)
+- Increase to K=10 runs per question
+- Compare prompt × temp using both accuracy and stability curves
+
+**How we could automate large-scale data collection**
+We already have most of an automated pipeline:
+1) Automatically build the dataset from exam PDFs + key PDFs using highlight extraction
+2) Run experiments automatically over (prompt × temperature × repeats) and save outputs into one JSONL
+3) Analyze automatically into summary.csv and per_question.csv
+4) Optionally generate an auto writeup markdown report
+Once this is stable, scaling is just changing N (more questions) and K (more repeats).
+
+**Files we can include**
+- Runner code: run_experiment.py
+- Saved raw outputs: runs_*.jsonl (contains prompt, raw output, parsed answer, correctness)
+- Analysis code: analyze_results.py
+- Analysis results: summary.csv and per_question.csv

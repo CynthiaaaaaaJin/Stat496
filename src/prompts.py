@@ -1,65 +1,68 @@
-def format_question(q: dict) -> str:
-    # supports A-D or A-E if E exists
-    letters = [k for k in ["A","B","C","D","E"] if k in q]
-    choice_lines = "\n".join([f"{L}. {q[L]}" for L in letters])
+from __future__ import annotations
+from typing import Dict, Optional
 
-    return (
-        f"Question (QID={q['qid']}):\n{q['stem']}\n\n"
-        f"Choices:\n{choice_lines}\n"
-    )
+LETTERS = ["A","B","C","D","E"]
 
-def treatment_prompt(treatment: str, q: dict) -> str:
-    base = format_question(q)
+def format_mcq(stem: str, options: Dict[str, str]) -> str:
+    opt_lines = "\n".join([f"{L}. {options.get(L,'')}" for L in LETTERS])
+    return f"{stem}\n\n{opt_lines}"
 
-    letters = [k for k in["A","B","C","D","E"] if k in q]
-    valid = "/".join(letters)
+# Strong, parseable contract:
+COMMON_RULE = (
+    "You MUST follow this format strictly:\n"
+    "First line: FINAL: <ANSWER>\n"
+    "After that, you may add explanation if allowed.\n"
+    "Do NOT change the word FINAL.\n"
+)
 
-    common_rules = (
-        "You are answering a multiple-choice question.\n"
-        f"Valid answer letters:{valid}.\n"
-        "Output rules:\n"
-        "- The Last line must be exactly: Final:<LETTER>\n"
-        "- Do NOT output anything else after the FINAL line.\n"
-    )
-
+def _treatment_instruction(treatment: str, is_mcq: bool) -> str:
+    # Keep treatments consistent across tasks; adapt wording for non-MCQ.
     if treatment == "T0":
-        return base + "\n" + common_rules + "\nAnswer normally."
+        return "Answer the question."
     if treatment == "T1":
-        return base + "\n" + common_rules + "\nBe concise. Output only the FINAL line."
+        return "Answer with ONLY the final result (no extra explanation)."
     if treatment == "T2":
-        return (
-            base + "\n" + common_rules + 
-            "\nBefore the Final line, write 2-4 short steps(each <= 12 words) under:\n"
-            "STEPS:\n"
-            "Then output ONLY the FINAL line."
-        )
+        return "Answer and include step-by-step reasoning."
     if treatment == "T3":
-        return (
-            base + "\n" + common_rules +
-            "\nChoose the best option and justify ONLY using the text of the selected option as evidence.\n"
-            "Before the Final line, output exactly one line:\n"
-            "Evidence:\n"
-            "Quote a short phrase from the option you selected.\n"
-            "Then output ONLY the FINAL line.\n"
-        )
+        if is_mcq:
+            return "Use only the provided options/background; do not use outside knowledge."
+        return "Use only the information in the question; avoid unstated assumptions or outside facts."
     if treatment == "T4":
-        return (
-            base + "\n" + common_rules +
-            "\nWork with 2-4 short steps(each <=12 words).\n"
-            "\nChoose the best option and justify ONLY using the text of the selected option as evidence.\n"
-            "Before the Final line, output exactly one line:\n"
-            "STEPS:\n"
-            "(your steps here)\n"
-            "Evidence:\n"
-            "Quote a short phrase from the option you selected.\n"
-            "Then output ONLY the FINAL line.\n"
-        )
+        if is_mcq:
+            return "Use step-by-step reasoning AND only cite/use the provided options/background."
+        return "Use step-by-step reasoning AND avoid unstated assumptions; rely only on the question text."
     if treatment == "T5":
         return (
-            base + "\n" + common_rules +
-            "\nAfter selecting an answer, do a self-check: briefly consider one alternative and why it is wrong(<=20 words).\n"
-            "Before the Final line, output exactly one lines:\n"
-            "Self-Check:<ALT_LETTER> - <reason>\n"
-            "Then output ONLY the FINAL line.\n"
+            "Pick the best answer.\n"
+            "Then do a quick self-check: try to find a reason your choice could be wrong.\n"
+            "Finally commit to ONE final answer.\n"
+            "Do NOT show the self-check."
         )
     raise ValueError(f"Unknown treatment: {treatment}")
+
+def build_prompt(
+    treatment: str,
+    stem: str,
+    options: Optional[Dict[str, str]] = None,
+    allow_explanation: bool = True,
+) -> str:
+    is_mcq = options is not None
+    q = format_mcq(stem, options) if is_mcq else stem
+
+    inst = _treatment_instruction(treatment, is_mcq)
+
+    # For MCQ, constrain answer space explicitly for easier parsing + fewer invalid outputs
+    if is_mcq:
+        answer_space = "Your FINAL answer must be exactly one letter: A, B, C, D, or E."
+    else:
+        answer_space = "Your FINAL answer must be the final result (a short phrase or a number)."
+
+    # If user wants to force no explanation, we still keep FINAL contract.
+    explain_rule = "After the first line, add no extra text." if not allow_explanation else "After the first line, you may add explanation."
+
+    return (
+        f"{q}\n\n"
+        f"{inst}\n"
+        f"{answer_space}\n\n"
+        f"{COMMON_RULE.replace('After that, you may add explanation if allowed.', explain_rule)}"
+    )
