@@ -6,8 +6,7 @@ from prompts import treatment_prompt
 
 DATA_PATH = "data/apchem_sample_10.jsonl"
 OUT_PATH  = "outputs/rq1_small_gpt4all_outputs.jsonl"
-
-MODEL_FILE = "gpt4all-falcon-q4_0.gguf"  # use your local model filename
+MODEL_FILE = "mistral-7b-instruct-v0.1Q4_0.gguf"
 TEMPS = [0.2, 1.0]
 TREATMENTS = ["T0", "T1", "T2", "T3", "T4"]
 REPEATS = 1
