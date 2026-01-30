@@ -1,43 +1,42 @@
-# STAT496 – Small Test (RQ1 Pilot)
+# STAT496 Small Test - RQ1
 
 ## Goal
-Test whether different prompt instruction styles change correctness and token cost on a small multiple-choice dataset (AP Chemistry).
+Test how prompt instruction styles (T0–T4) and temperature affect:
+- correctness (accuracy vs ground truth)
+- stability (answer consistency across repeats)
+- cost proxy (token usage, when available)
 
-## Data
-- `data/apchem_small.jsonl` (2–3 AP Chem MC questions, manually entered)
-- Ground-truth answers included as `"answer"` in the JSONL.
+## Dataset
+AP Chemistry multiple-choice sample (10 questions for small test).
 
 ## Treatments (Prompts)
-- T0 Normal answering
-- T1 Final answer only
-- T2 Step-by-step (still return FINAL only)
-- T3 Cite background (quote the selected choice text)
-- T4 Step-by-step + cite background
+- T0: normal
+- T1: final only
+- T2: short steps + final
+- T3: evidence line quoting selected option + final
+- T4: short steps + evidence + final
 
-## Variables varied in this pilot
-- temperature ∈ {0.2, 0.8}
-- prompt treatment ∈ {T0..T4}
-- repeats = 1 (will expand to repeats=2 for stability)
+All prompts enforce the last line:
+`Final:<LETTER>`
 
-## How we ran it
-- Model: `models/gemini-flash-latest` (free-tier friendly)
-- Throttle: 1 request every 13 seconds to avoid 429 free-tier rate limit
-- Output saved to: `outputs/rq1_small_outputs.jsonl`
+## Variables varied in small test
+- treatment: T0–T4
+- temperature: 0.2 vs 1.0
+- repeats: 1 (small test), will increase later for stability
 
-## Example prompts
-(Include 1–2 prompts here, e.g., T0 and T4)
-
-## What responses we received (examples)
-(Include 2–3 interesting outputs: correct, wrong, maybe a temp=0.8 weird one)
-
-## Initial results
-Paste output from:
-`python src/analyze_rq1_small.py`
-
-## How might we improve / expand?
-- Increase dataset size (e.g., 20–60 questions)
-- Add repeats=2 to quantify stability
-- Add T5 self-check
-- Compare across models: flash vs pro vs gemini-3
-- Automate data entry (later): parse PDFs or use a clean public MC dataset
-- Automate large-scale collection with batching + rate-limit aware scheduling
+## How to run (Gemini free tier)
+```bash
+pip install -r requirements.txt
+export GEMINI_API_KEY="YOUR_KEY"
+python src/run_rq1_small.py \
+  --backend gemini \
+  --model models/gemini-flash-latest \
+  --data data/apchem_sample_10.jsonl \
+  --out outputs/rq1_small_outputs.jsonl \
+  --treatments T0 T1 T2 T3 T4 \
+  --temps 0.2 1.0 \
+  --repeats 1 \
+  --rpm_limit 5
+python src/analyze_rq1_small.py \
+  --preds outputs/rq1_small_outputs.jsonl \
+  --answers data/apchem_answers_sample_10.jsonl
