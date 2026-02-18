@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Dict, Optional
 
-LETTERS = ["A","B","C","D","E"]
+LETTERS = ["A","B","C","D"] #delete"E"
 
 def format_mcq(stem: str, options: Dict[str, str]) -> str:
     opt_lines = "\n".join([f"{L}. {options.get(L,'')}" for L in LETTERS])
