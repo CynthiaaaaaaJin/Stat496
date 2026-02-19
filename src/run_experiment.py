@@ -94,8 +94,6 @@ def main() -> None:
                             "parsed_answer": parsed,
                             "ground_truth": gt,
                             "correct": correct,
-                            "input_tokens": res.input_tokens,
-                            "output_tokens": res.output_tokens,
                             "token_count_method": res.token_count_method,
                             "latency_sec": latency,
                             "model_filename": args.model_filename,
