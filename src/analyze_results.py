@@ -94,20 +94,7 @@ def main() -> None:
         avg_mode_freq = sum(mode_freqs) / max(1, len(mode_freqs))
         avg_entropy = sum(entropies) / max(1, len(entropies))
 
-        # token cost: use total tokens if present; otherwise blank
-        totals = []
-        for x in rr:
-            it = x.get("input_tokens")
-            ot = x.get("output_tokens")
-            if isinstance(it, int) and isinstance(ot, int):
-                totals.append(it + ot)
-        avg_total_tokens = (sum(totals) / len(totals)) if totals else ""
-        total_tokens = (sum(totals)) if totals else ""
-
-        cost_per_correct = ""
-        if totals and num_correct > 0:
-            cost_per_correct = total_tokens / num_correct
-
+    
         summary.append({
             "config_id": cfg,
             "n_runs": n,
