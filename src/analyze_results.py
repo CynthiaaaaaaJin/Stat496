@@ -116,9 +116,6 @@ def main() -> None:
             "strict_stability": round(strict_stability, 4),
             "avg_mode_freq": round(avg_mode_freq, 4),
             "avg_entropy_bits": round(avg_entropy, 4),
-            "avg_total_tokens_per_run": avg_total_tokens,
-            "total_tokens": total_tokens,
-            "tokens_per_correct": cost_per_correct,
         })
 
     # Ensure output directory exists
