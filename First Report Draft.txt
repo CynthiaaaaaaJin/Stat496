@@ -1,0 +1,120 @@
+﻿First
+Since the original dataset is not publicly available, we tried several alternative datasets over the past few weeks. We ultimately found that the COSMOS QA dataset fit our needs, so we will use its train.csv for our experiments. So far, we have selected 10 questions for a small pilot test (dataset link: https://wilburone.github.io/cosmos/).
+We updated extract_dataset_from_csv.py to work with the new dataset, and we removed the “E” answer option in parsing.py and prompt.py. Finally, we ran experiments on 10 questions across 6 treatments, using temperatures of 0.2 and 0.7, with k=3 and max_token=256 using gpt4all local LLM. The results are summarized below.
+  
+
+* T3’s prompt style + higher randomness sometimes “finds” the right answer more often, but it’s not reliable.
+* T1 forces “final answer only” at low temp makes it deterministic — but if the deterministic behavior is wrong, it stays wrong.
+* T4 gives better than average accuracy without exploding variability.
+In the next week, we will try to run experiments with 50 questions and run the gemini online api, attaching a scatter plot :(accuracy vs entropy) or (accuracy vs strict_stability)
+
+
+Second
+Introduction
+Large language models (LLMs) are increasingly used in real world decision support settings such as tutoring and customer support. In these contexts, users expect reliable and consistent assistance. Variability across repeated responses to the same question can undermine trust. It can also complicate debugging and hinder safe use in practice. When identical prompts yield materially different outputs, it becomes difficult to determine the cause. The differences may reflect genuine uncertainty. They may also come from decoding randomness, prompt sensitivity, or other system factors. This makes evaluation and quality control more challenging.
+
+
+The project aims to investigate the accuracy and consistency of the model when answering fixed multiple-choice questions based on variations in prompt templates and sampling temperatures. The project attempts to simulate the test-taker scenario by repeatedly testing the model under the same condition for each question and determining the accuracy and consistency of the results. This reflects the real-world deployment scenario. Even though the model may be moderately accurate, it becomes less reliable if the results are inconsistent and unpredictable. 
+
+
+The project was inspired by various claims that the prompt template used for the model matters for the results. However, there have been inconsistent claims about the effects of the prompt template used for the model. Existing studies have proven the importance of prompt templates for the performance of large language models. Zhuo et al. (2024) have proven that large language models are highly sensitive to changes in prompt templates. Renze & Guven (2024) have also proven that the sampling temperatures affect the performance of the model in problem-solving. Furthermore, Atreja et al. (2025) have proven that prompt templates influence the results in large-scale annotation tasks. This project aims to investigate which prompt templates and temperatures improve accuracy and which improve or degrade stability.
+(References: Zhuo et al., 2024; Renze & Guven, 2024; Atreja et al., 2025.)
+
+
+Experimental Design
+
+
+We run the same multiple-choice question set through a family of prompt templates that progressively add structure: T0 is a “normal” baseline, T1 enforces final answer only, T2 requests short steps + final, T3 requests one evidence line quoting the selected option + final, T4 combines short steps + evidence + final, and T5 adds a self-check to the normal prompt. For each (question, prompt template) pair, we sample the model multiple times under three temperature settings 0.2, 0.5, 0.7 to quantify the stability–accuracy tradeoff. From each run, we automatically extract the final option letter to compute accuracy against the answer key and a stability rate that measures how consistently the model returns the same option across repeated samples. This design allows us to isolate the effects of prompt style and decoding randomness on both correctness and reliability. As future work, we will complete this experimental phase and evaluate whether the same patterns generalize to other LLMs. Following are the specific steps:
+Task and dataset
+
+
+We use the Cosmos QA multiple choice reading comprehension dataset (Huang et al., 2019). Each example in this dataset contains a short text and a question with four possible answer options. We use the label provided in the dataset as the actual answer (which maps to options A-D), and test the accuracy and stability of the model across multiple trials.
+Each dataset item is stored as a JSONL record with fields:
+* id: unique question identifier
+* type: "mcq"
+* stem: question text
+* options: a dictionary {"A": ..., "B": ..., "C": ..., "D": ...}
+* answer: the correct option as a one-element list, e.g. ["B"]
+* answer_format: "letters"
+We construct this JSONL from a CSV dataset where label_index indicates the correct option (0=A, 1=B, 2=C, 3=D). We run experiments on N = [NUM_QUESTIONS] questions (e.g., 10 for a pilot run), and can scale up later.
+Model and inference backend
+
+
+We run all trials using a local GPT4All GGUF model (no cloud API). Model: [MODEL_NAME.gguf] (example: gpt4all-falcon-newbpe-q4_0.gguf). Inference is performed via a GPT4AllBackend wrapper around the gpt4all Python package.
+Decoding parameters (held constant unless stated):
+* max_tokens = [MAX_TOKENS] (e.g., 256)
+* top_p = [TOP_P] (e.g., 0.95)
+* repeat_penalty = [REPEAT_PENALTY] (e.g., 1.1)
+* seed = [SEED] (optional; we use -1 / unset unless reproducibility is needed)
+Prompt treatments
+
+
+We compare a family of prompt templates that progressively add structure. All prompts enforce a strict, parseable output contract:
+* Last line must be: FINAL: <ANSWER>
+* For MCQ, <ANSWER> must be exactly one of A, B, C, D (E is disallowed).
+Treatments:
+* T0: Baseline: Answer the question.
+* T1: Final-only: Answer with ONLY the final result (no extra explanation).
+* T2: Step-by-step: Answer and include step-by-step reasoning.
+* T3: Constrained: Use only the provided options/background; do not use outside knowledge.
+* T4: Step-by-step + constrained: Use step-by-step reasoning AND only use the provided options/background.
+* T5: Self-check (hidden): do a quick internal self-check, then commit to one final answer; do NOT show the self-check.
+
+
+Example prompt skeleton (MCQ):
+<STEM>
+
+A. <option A>
+B. <option B>
+C. <option C>
+D. <option D>
+
+<treatment instruction>
+
+Your FINAL answer must be exactly ONE letter: A, B, C, or D.
+You MUST follow this format strictly:
+Last line: FINAL: <ANSWER>
+Before the last line: [explanation allowed/forbidden depending on treatment]
+
+Temperature and repeated trials
+
+
+To quantify the accuracy–stability tradeoff, we vary sampling temperature and repeat each condition multiple times. Temperatures: T in {0.2, 0.5, 0.7} (or the subset used in a given run). Repeats per (question, treatment, temperature): k = [K] (e.g., 3). Total runs:
+* TOTAL_RUNS = N × (#treatments) × (#temperatures) × k
+Each run logs a JSONL row containing the prompt, the raw model output, the parsed answer, the ground truth, and a correctness flag.
+Parsing and scoring
+
+
+We parse the model output by extracting the answer letter from the required FINAL line "FINAL: <ANSWER>"(prefer last line; fallback to last valid FINAL occurrence). Only A–D are accepted; any other output is treated as invalid/blank. Correctness is computed per run as:
+* correct = 1  , if parsed_answer matches ground_truth else 0
+Metrics
+
+
+We analyze two main outcomes: accuracy and stability.
+* Accuracy:
+   * Run-level accuracy: mean(correct) across all runs in a config (treatment + temperature).
+   * Per-question accuracy: accuracy_over_runs for each (question_id, config_id) across k repeats.
+* Stability:
+   * strict_stable: 1 if all k runs give the same (non-empty) parsed answer, else 0
+   * mode_freq: fraction of runs equal to the most common answer for that question under that config
+   * answer_entropy_bits: entropy of the answer distribution (0 means perfectly consistent)
+Analysis plan
+
+
+Because each question is evaluated under every condition, the design is within-question. We report summary tables by config_id (mean accuracy, strict_stability, mode_freq, entropy) and per-question breakdowns. As an extension, we can fit logistic regression or mixed-effects logistic models for correctness with predictors (treatment, temperature, and their interaction), a random intercept for question_id to account for baseline difficulty, and some plots that are helpful for analyzing the results.
+Currently, we use analyze_results.py to summarize the results given by LLM to the summary_blog10.csv and analyze through the data here.
+Citation
+[1] Zhuo, Jingming, et al. “Prosa: Assessing and Understanding the Prompt Sensitivity of LLMS.” arXiv.Org, 16 Oct. 2024, arxiv.org/abs/2410.12405.
+
+
+
+
+[2] Renze, Matthew, and Erhan Guven. “The Effect of Sampling Temperature on Problem Solving in Large Language Models.” The Effect of Sampling Temperature on Problem Solving in Large Language Models, 7 Feb. 2024, arxiv.org/html/2402.05201v1.
+
+
+
+
+[3] Atreja, Shubham, et al. “What’s in a Prompt?: A Large-Scale Experiment to Assess the Impact of Prompt Design on the Compliance and Accuracy of LLM-Generated Text Annotations.” Proceedings of the International AAAI Conference on Web and Social Media, 7 June 2025, ojs.aaai.org/index.php/ICWSM/article/view/35807.
+
+
+[4] Huang, Lifu, et al. “Cosmos Qa: Machine Reading Comprehension with Contextual Commonsense Reasoning.” arXiv.Org, 6 Sept. 2019, arxiv.org/abs/1909.00277.
