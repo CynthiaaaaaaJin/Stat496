@@ -25,4 +25,19 @@ All prompts enforce the last line:
 - temperature: 0.2 vs 0.7 vs 1.0
 - repeats: 3 (small test), will increase later for stability
 
+## Terminal Process:
+python -m src.run_experiment \
+  --model-filename "/Users/cynthiajyx/Library/Application Support/nomic.ai/GPT4All/gpt4all-falcon-newbpe-q4_0.gguf" \
+  --dataset data/blog_10.jsonl \
+  --out-jsonl outputs/runs_blog10_T0_T5_t02_t07_k3_max256.jsonl \
+  --treatments T0 T1 T2 T3 T4 T5 \
+  --temps 0.2,0.7 \
+  --k 3 \
+  --max-tokens 256 \
+  --allow-explanation
+
+python -m src.analyze_results \
+--in-jsonl outputs/runs_blog10_T0_T5_t02_t07_k3_max256.jsonl \
+ --out-summary-csv outputs/summary_blog10.csv \
+--out-per-question-csv outputs/per_question_blog10.csv
 
