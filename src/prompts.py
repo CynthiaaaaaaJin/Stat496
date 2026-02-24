@@ -35,7 +35,7 @@ def _treatment_instruction(treatment: str, is_mcq: bool) -> str:
         return (
             "Pick the best answer.\n"
             "Then do a quick self-check: try to find a reason your choice could be wrong.\n"
-            "Finally commit to ONE final answer.\n"
+            "Finally commit to ONE letter answer.\n"
             "Do NOT show the self-check."
         )
     raise ValueError(f"Unknown treatment: {treatment}")
