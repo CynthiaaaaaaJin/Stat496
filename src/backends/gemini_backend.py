@@ -1,12 +1,16 @@
+# src/backends/gemini_backend.py
+from __future__ import annotations
+
 import os
 import time
-from typing import Dict, Any, Optional
+from typing import Optional, Dict, Any
 
 from google import genai
 
+from .types import GenerationResult
+
 
 def _usage_to_dict(usage_obj) -> Dict[str, Any]:
-    """Gemini SDK returns a UsageMetadata object; convert to plain dict safely."""
     if usage_obj is None:
         return {}
     d = {}
@@ -18,8 +22,8 @@ def _usage_to_dict(usage_obj) -> Dict[str, Any]:
 
 class GeminiBackend:
     """
-    Uses Google AI Studio / Gemini API key (free tier supported).
-    Free tier has strict rate limits, so we sleep between calls.
+    Gemini API backend.
+    Keeps the same interface as GPT4AllBackend so the rest of the pipeline doesn't change.
     """
 
     def __init__(
@@ -33,9 +37,8 @@ class GeminiBackend:
 
         api_key = os.environ.get("GEMINI_API_KEY")
         if not api_key:
-            raise RuntimeError("Missing GEMINI_API_KEY. Set it with: export GEMINI_API_KEY='...'" )
+            raise RuntimeError("Missing GEMINI_API_KEY. Set it with: export GEMINI_API_KEY='...'")
 
-        # Client reads api key from env or you can pass explicitly
         self.client = genai.Client(api_key=api_key)
         self._last_call_ts = 0.0
 
@@ -43,10 +46,12 @@ class GeminiBackend:
         self,
         prompt: str,
         temperature: float = 0.2,
-        max_output_tokens: int = 128,
+        max_tokens: int = 256,          # unify naming with GPT4AllBackend
+        top_p: float = 0.95,            # keep for compatibility, Gemini may ignore
+        repeat_penalty: float = 1.1,    # keep for compatibility, Gemini may ignore
         seed: Optional[int] = None,
-    ) -> Dict[str, Any]:
-        # rate limit (free tier)
+    ) -> GenerationResult:
+        # free-tier rate limit
         now = time.time()
         elapsed = now - self._last_call_ts
         if elapsed < self.min_interval:
@@ -57,7 +62,8 @@ class GeminiBackend:
             contents=prompt,
             config={
                 "temperature": temperature,
-                "max_output_tokens": max_output_tokens,
+                "max_output_tokens": max_tokens,
+                # Note: Gemini may not support seed or repeat_penalty the same way.
             },
         )
         self._last_call_ts = time.time()
@@ -65,8 +71,14 @@ class GeminiBackend:
         text = getattr(response, "text", "") or ""
         usage = _usage_to_dict(getattr(response, "usage_metadata", None))
 
-        return {
-            "raw_text": text,
-            "usage": usage,
-            "model": self.model_name,
-        }
+        # Try to map token counts if available
+        input_tokens = usage.get("prompt_token_count")
+        output_tokens = usage.get("candidates_token_count")  # sometimes present
+        # total_tokens = usage.get("total_token_count")  # optional if you want to log
+
+        return GenerationResult(
+            text=text.strip(),
+            input_tokens=input_tokens,
+            output_tokens=output_tokens,
+            token_count_method="gemini",
+        )

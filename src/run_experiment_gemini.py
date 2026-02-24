@@ -7,25 +7,30 @@ from typing import List
 from src.data_io import iter_dataset_items
 from src.prompts import build_prompt
 from src.parsing import parse_answer, is_correct
-from src.backends.gpt4all_backend import GPT4AllBackend
+from src.backends.gemini_backend import GeminiBackend
+
 
 def parse_csv_list(s: str) -> List[str]:
     return [x.strip() for x in s.split(",") if x.strip()]
 
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--model-filename", required=True, help="Path to GGUF model file for GPT4All.")
+
+    ap.add_argument("--model-name", required=True, help="Gemini model name, e.g. models/gemini-3-flash-preview")
+    ap.add_argument("--rpm-limit", type=int, default=5, help="Requests per minute limit (free tier protection).")
+
     ap.add_argument("--dataset", required=True, help="JSONL dataset path.")
-    ap.add_argument("--out-jsonl", default="outputs/runs.jsonl")
+    ap.add_argument("--out-jsonl", default="outputs/runs_gemini.jsonl")
 
     ap.add_argument("--treatments", nargs="+", default=["T0", "T5"])
     ap.add_argument("--temps", default="0.2")
     ap.add_argument("--k", type=int, default=1)
 
     ap.add_argument("--max-tokens", type=int, default=256)
-    ap.add_argument("--top-p", type=float, default=0.95)
-    ap.add_argument("--repeat-penalty", type=float, default=1.1)
-    ap.add_argument("--seed", type=int, default=-1, help="If >=0, use a fixed seed for reproducibility (if backend supports).")
+    ap.add_argument("--top-p", type=float, default=0.95, help="Kept for compatibility. Gemini may ignore.")
+    ap.add_argument("--repeat-penalty", type=float, default=1.1, help="Kept for compatibility. Gemini may ignore.")
+    ap.add_argument("--seed", type=int, default=-1, help="If >=0, use seed if supported (Gemini may ignore).")
 
     ap.add_argument("--allow-explanation", action="store_true", help="Allow explanation after FINAL line (recommended).")
 
@@ -36,7 +41,7 @@ def main() -> None:
     k = args.k
     seed = None if args.seed < 0 else args.seed
 
-    backend = GPT4AllBackend(model_filename=args.model_filename)
+    backend = GeminiBackend(model_name=args.model_name, rpm_limit=args.rpm_limit)
 
     items = list(iter_dataset_items(args.dataset))
     if not items:
@@ -59,6 +64,7 @@ def main() -> None:
 
                     for r in range(k):
                         run_id = f"{config_id}__{qid}__r{r}"
+
                         prompt = build_prompt(
                             treatment=t,
                             stem=stem,
@@ -95,13 +101,17 @@ def main() -> None:
                             "ground_truth": gt,
                             "correct": correct,
                             "token_count_method": res.token_count_method,
+                            "input_tokens": res.input_tokens,
+                            "output_tokens": res.output_tokens,
                             "latency_sec": latency,
-                            "model_filename": args.model_filename,
+                            "model_name": args.model_name,
+                            "rpm_limit": args.rpm_limit,
                             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                         }
                         fout.write(json.dumps(row, ensure_ascii=False) + "\n")
 
     print(f"Wrote runs to: {args.out_jsonl}")
+
 
 if __name__ == "__main__":
     main()
