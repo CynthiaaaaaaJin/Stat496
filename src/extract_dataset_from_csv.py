@@ -4,10 +4,12 @@ import argparse
 import csv
 import json
 import os
+import random
 from collections import Counter
 from typing import Dict, Any, List, Optional
 
 IDX_TO_LETTER = {0: "A", 1: "B", 2: "C", 3: "D"}
+
 
 def normalize_stem(context: str, question: str) -> str:
     context = (context or "").strip()
@@ -15,6 +17,7 @@ def normalize_stem(context: str, question: str) -> str:
     if context and question:
         return f"{context}\n\nQuestion: {question}"
     return question or context
+
 
 def get_label_index(row: Dict[str, str]) -> Optional[int]:
     # supports either label_index or label
@@ -26,13 +29,16 @@ def get_label_index(row: Dict[str, str]) -> Optional[int]:
                 return None
     return None
 
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--in-csv", required=True, help="Input CSV path (must have answer0..answer3 and label_index/label).")
     ap.add_argument("--out-jsonl", required=True, help="Output JSONL dataset path.")
-    ap.add_argument("--n", type=int, default=0, help="If >0, only write first N rows (e.g., 10).")
-    ap.add_argument("--start", type=int, default=0, help="Start row offset (0-based).")
-    ap.add_argument("--id-prefix", default="BLOG", help="If id missing/duplicate, use this prefix to build ids.")
+    ap.add_argument("--n", type=int, default=0, help="If >0, write N rows.")
+    ap.add_argument("--start", type=int, default=0, help="Start row offset (0-based) for slice mode.")
+    ap.add_argument("--id-prefix", default="BLOG", help="Prefix used to build clean ids, e.g. COSMOS_Q -> COSMOS_Q01.")
+    ap.add_argument("--sample-random", action="store_true", help="Randomly sample N rows instead of taking a slice.")
+    ap.add_argument("--seed", type=int, default=42, help="Random seed for reproducible sampling.")
     args = ap.parse_args()
 
     os.makedirs(os.path.dirname(args.out_jsonl) or ".", exist_ok=True)
@@ -40,28 +46,44 @@ def main() -> None:
     items: List[Dict[str, Any]] = []
     with open(args.in_csv, "r", encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
-        rows = list(reader)
+        all_rows = list(reader)
 
-    # slice
-    rows = rows[args.start:]
-    if args.n and args.n > 0:
-        rows = rows[:args.n]
+    # choose rows
+    if args.sample_random:
+        if args.seed is not None:
+            random.seed(args.seed)
+
+        if args.n and args.n > 0:
+            n_take = min(args.n, len(all_rows))
+            selected = random.sample(list(enumerate(all_rows)), n_take)
+        else:
+            selected = list(enumerate(all_rows))
+            random.shuffle(selected)
+    else:
+        sliced = all_rows[args.start:]
+        if args.n and args.n > 0:
+            sliced = sliced[:args.n]
+        selected = [(args.start + i, row) for i, row in enumerate(sliced)]
 
     # first pass: collect ids, but we will force uniqueness
     raw_ids = []
-    for i, r in enumerate(rows):
+    for i, (orig_idx, r) in enumerate(selected, start=1):
         rid = (r.get("id") or "").strip()
         if not rid:
-            rid = f"{args.id_prefix}_{args.start + i:04d}"
+            # clean ids like COSMOS_Q01, COSMOS_Q02, ...
+            width = max(2, len(str(len(selected))))
+            rid = f"{args.id_prefix}{i:0{width}d}"
         raw_ids.append(rid)
 
     counts = Counter(raw_ids)
 
-    for i, r in enumerate(rows):
-        rid = raw_ids[i]
-        # force unique ids: if duplicates exist, append row index
+    for i, (orig_idx, r) in enumerate(selected, start=1):
+        rid = raw_ids[i - 1]
+
+        # force unique ids: if duplicates exist, append output index
         if counts[rid] > 1:
-            rid = f"{rid}_{args.start + i:04d}"
+            width = max(2, len(str(len(selected))))
+            rid = f"{rid}_{i:0{width}d}"
 
         context = r.get("context", "") or ""
         question = r.get("question", "") or ""
@@ -84,12 +106,12 @@ def main() -> None:
             "id": rid,
             "type": "mcq",
             "stem": normalize_stem(context, question),
-            "options": options,                 # IMPORTANT: your run_experiment uses "options"
-            "answer": [answer_letter],          # list of letters, same as your bioc406 dataset
+            "options": options,
+            "answer": [answer_letter],
             "answer_format": "letters",
             "source": {
                 "csv_path": args.in_csv,
-                "row_index": args.start + i,
+                "row_index": orig_idx,
                 "label_index": label_idx,
             },
         }
@@ -100,6 +122,7 @@ def main() -> None:
             fout.write(json.dumps(item, ensure_ascii=False) + "\n")
 
     print(f"Wrote {len(items)} items to: {args.out_jsonl}")
+
 
 if __name__ == "__main__":
     main()
