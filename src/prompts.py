@@ -1,17 +1,17 @@
 from __future__ import annotations
 from typing import Dict, Optional
 
-LETTERS = ["A","B","C","D"]
+LETTERS = ["A", "B", "C", "D"]
 
 def format_mcq(stem: str, options: Dict[str, str]) -> str:
-    opt_lines = "\n".join([f"{L}. {options.get(L,'')}" for L in LETTERS])
+    opt_lines = "\n".join([f"{L}. {options.get(L, '')}" for L in LETTERS])
     return f"{stem}\n\n{opt_lines}"
 
 # Strong, parseable contract:
 COMMON_RULE = (
     "You MUST follow this format strictly:\n"
     "Last line: FINAL: <ANSWER>\n"
-    "Before the last line, you may add explanation if allowed.\n"
+    "Explain before the last line.\n"
     "Do NOT change the word FINAL.\n"
 )
 
@@ -35,8 +35,7 @@ def _treatment_instruction(treatment: str, is_mcq: bool) -> str:
         return (
             "Pick the best answer.\n"
             "Then do a quick self-check: try to find a reason your choice could be wrong.\n"
-            "Finally commit to ONE letter answer.\n"
-            "Do NOT show the self-check."
+            "Finally commit to ONE final answer.\n"
         )
     raise ValueError(f"Unknown treatment: {treatment}")
 
@@ -51,18 +50,30 @@ def build_prompt(
 
     inst = _treatment_instruction(treatment, is_mcq)
 
-    # For MCQ, constrain answer space explicitly for easier parsing + fewer invalid outputs
+    # Force T1 to be final-only regardless of caller setting
+    if treatment == "T1":
+        allow_explanation = False
+
+    # Constrain answer space explicitly (MCQ vs non-MCQ)
     if is_mcq:
         answer_space = "Your FINAL answer must be exactly one letter: A, B, C, D."
     else:
         answer_space = "Your FINAL answer must be the final result (a short phrase or a number)."
 
-    # If user wants to force no explanation, we still keep FINAL contract.
-    explain_rule = "Before the last line, add no extra text." if not allow_explanation else "Before the last line, you may add explanation."
+    # Explanation rule toggled by allow_explanation
+    explain_rule = (
+        "Before the last line, add no extra text.\n"
+        if not allow_explanation
+        else "Explain before the last line.\n"
+    )
 
+    # Replace the explain line inside COMMON_RULE to avoid conflicts/duplication
+    rules = COMMON_RULE.replace("Explain before the last line.\n", explain_rule)
+
+    # Put requirements BEFORE the question text
     return (
-        f"{q}\n\n"
         f"{inst}\n"
-        f"{answer_space}\n\n"
-        f"{COMMON_RULE.replace('Before the last line, you may add explanation if allowed.', explain_rule)}"
+        f"{answer_space}\n"
+        f"{rules}\n\n"
+        f"QUESTION:\n{q}\n"
     )
