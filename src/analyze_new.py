@@ -119,7 +119,7 @@ def plot_tradeoff(summary_cfg: pd.DataFrame, out_png: str) -> None:
     temps = sorted(summary_cfg["temp"].dropna().unique().tolist())
     for temp in temps:
         sub = summary_cfg[summary_cfg["temp"] == temp]
-        ax.scatter(sub["entropy_mean_bits"], sub["accuracy_mean"], label=f"temp={temp}")
+        ax.scatter(sub["entropy_mean_bits"], sub["accuracy_mean"], label=f"temp={temp}", alpha=0.55)
         for _, r in sub.iterrows():
             ax.annotate(
                 str(r["treatment"]),
@@ -370,7 +370,7 @@ def plot_tradeoff_accuracy_vs_stability(summary_cfg: pd.DataFrame, out_png: str)
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
-    ax.scatter(summary_cfg["strict_stability_rate"], summary_cfg["accuracy_mean"])
+    ax.scatter(summary_cfg["strict_stability_rate"], summary_cfg["accuracy_mean"],alpha=0.55)
 
     for _, r in summary_cfg.iterrows():
         label = f"{r['treatment']}_t{r['temp']}"
