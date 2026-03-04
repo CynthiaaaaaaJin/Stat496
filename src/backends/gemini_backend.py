@@ -1,3 +1,4 @@
+# src/backends/gemini_backend.py
 from __future__ import annotations
 
 import os
@@ -21,6 +22,10 @@ def _usage_to_dict(usage_obj) -> Dict[str, Any]:
 
 
 def _extract_text(response) -> str:
+    """
+    Gemini SDK sometimes returns empty response.text even when there is text in candidates.
+    This function tries response.text first, then falls back to candidates->content->parts.
+    """
     t = getattr(response, "text", None)
     if t:
         return str(t)
@@ -33,6 +38,7 @@ def _extract_text(response) -> str:
             pt = getattr(p, "text", None)
             if pt:
                 return str(pt)
+
     return ""
 
 
@@ -64,20 +70,28 @@ class GeminiBackend:
         self,
         prompt: str,
         temperature: float = 0.2,
-        max_tokens: int = 256,
-        top_p: float = 0.95,
-        repeat_penalty: float = 1.1,
-        seed: Optional[int] = None,
+        max_tokens: int = 256,          # unify naming with GPT4AllBackend
+        top_p: float = 0.95,            # kept for compatibility; may be ignored
+        repeat_penalty: float = 1.1,    # kept for compatibility; may be ignored
+        seed: Optional[int] = None,     # Gemini may ignore
     ) -> GenerationResult:
+        # free-tier rate limit (basic)
         now = time.time()
         elapsed = now - self._last_call_ts
         if elapsed < self.min_interval:
             time.sleep(self.min_interval - elapsed)
 
+        # Build config. Only include fields that are commonly accepted.
         config: Dict[str, Any] = {
             "temperature": temperature,
             "max_output_tokens": max_tokens,
         }
+
+        # Optional: if your SDK/model supports top_p, uncomment this:
+        # config["top_p"] = top_p
+
+        # Optional: stabilize plain text output if supported (safe to try; remove if errors):
+        # config["response_mime_type"] = "text/plain"
 
         response = self.client.models.generate_content(
             model=self.model_name,
@@ -88,12 +102,14 @@ class GeminiBackend:
 
         text = _extract_text(response)
         usage = _usage_to_dict(getattr(response, "usage_metadata", None))
+
         input_tokens = usage.get("prompt_token_count")
         output_tokens = usage.get("candidates_token_count")
 
         if self.debug and not text:
             try:
                 sys.stderr.write("WARN: Gemini returned empty text. Dumping response (truncated):\n")
+                # model_dump_json exists on pydantic models; if unavailable, fallback to str()
                 if hasattr(response, "model_dump_json"):
                     sys.stderr.write(response.model_dump_json()[:2000] + "\n")
                 else:
