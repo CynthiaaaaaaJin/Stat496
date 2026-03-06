@@ -1,0 +1,22 @@
+                 Generalized Linear Model Regression Results                  
+==============================================================================
+Dep. Variable:                   prop   No. Observations:                 3600
+Model:                            GLM   Df Residuals:                    17993
+Model Family:                Binomial   Df Model:                            6
+Link Function:                  Logit   Scale:                          1.0000
+Method:                          IRLS   Log-Likelihood:                -6069.0
+Date:                Thu, 05 Mar 2026   Deviance:                       10081.
+Time:                        18:50:45   Pearson chi2:                 1.34e+04
+No. Iterations:                     5   Pseudo R-squ. (CS):            0.02361
+Covariance Type:            nonrobust                                         
+======================================================================================
+                         coef    std err          z      P>|z|      [0.025      0.975]
+--------------------------------------------------------------------------------------
+Intercept              2.3328      0.072     32.497      0.000       2.192       2.473
+C(treatment)[T.T1]    -0.1130      0.084     -1.344      0.179      -0.278       0.052
+C(treatment)[T.T2]    -0.1660      0.083     -1.993      0.046      -0.329      -0.003
+C(treatment)[T.T3]    -0.0648      0.085     -0.764      0.445      -0.231       0.102
+C(treatment)[T.T4]    -0.2263      0.082     -2.745      0.006      -0.388      -0.065
+C(treatment)[T.T5]    -0.5725      0.078     -7.320      0.000      -0.726      -0.419
+temp                  -0.1387      0.037     -3.723      0.000      -0.212      -0.066
+======================================================================================
