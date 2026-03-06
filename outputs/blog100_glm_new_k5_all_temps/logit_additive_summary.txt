@@ -1,22 +1,22 @@
                  Generalized Linear Model Regression Results                  
 ==============================================================================
-Dep. Variable:                correct   No. Observations:                15000
-Model:                            GLM   Df Residuals:                    14993
+Dep. Variable:                correct   No. Observations:                18000
+Model:                            GLM   Df Residuals:                    17993
 Model Family:                Binomial   Df Model:                            6
 Link Function:                  Logit   Scale:                          1.0000
-Method:                          IRLS   Log-Likelihood:                -5371.0
-Date:                Tue, 03 Mar 2026   Deviance:                       10742.
-Time:                        22:37:51   Pearson chi2:                 1.50e+04
-No. Iterations:                     5   Pseudo R-squ. (CS):           0.002973
+Method:                          IRLS   Log-Likelihood:                -6571.6
+Date:                Thu, 05 Mar 2026   Deviance:                       13143.
+Time:                        16:10:59   Pearson chi2:                 1.80e+04
+No. Iterations:                     5   Pseudo R-squ. (CS):           0.004768
 Covariance Type:              cluster                                         
 ======================================================================================
                          coef    std err          z      P>|z|      [0.025      0.975]
 --------------------------------------------------------------------------------------
-Intercept              2.2660      0.320      7.084      0.000       1.639       2.893
-C(treatment)[T.T1]    -0.0859      0.189     -0.454      0.650      -0.457       0.285
-C(treatment)[T.T2]    -0.1428      0.107     -1.329      0.184      -0.353       0.068
-C(treatment)[T.T3]    -0.0394      0.083     -0.477      0.633      -0.201       0.122
-C(treatment)[T.T4]    -0.2086      0.104     -2.013      0.044      -0.412      -0.005
-C(treatment)[T.T5]    -0.4814      0.173     -2.776      0.006      -0.821      -0.141
-temp                  -0.0874      0.052     -1.684      0.092      -0.189       0.014
+Intercept              2.3328      0.327      7.141      0.000       1.692       2.973
+C(treatment)[T.T1]    -0.1130      0.185     -0.612      0.541      -0.475       0.249
+C(treatment)[T.T2]    -0.1660      0.104     -1.598      0.110      -0.370       0.038
+C(treatment)[T.T3]    -0.0648      0.075     -0.861      0.389      -0.212       0.083
+C(treatment)[T.T4]    -0.2263      0.109     -2.076      0.038      -0.440      -0.013
+C(treatment)[T.T5]    -0.5725      0.177     -3.238      0.001      -0.919      -0.226
+temp                  -0.1387      0.041     -3.405      0.001      -0.219      -0.059
 ======================================================================================
