@@ -1,10 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# === 1) read results ===
-print("RUNNING forest_plot.py")
-print("CWD =", __import__("os").getcwd())
-
 df = pd.read_csv("/Users/krise/Documents/GitHub/Stat496/outputs/blog100_glm_new_k5_all_temps/logit_additive_coef.csv")
 
 # keep only treatment terms (drop intercept and temp)
@@ -46,11 +42,10 @@ plt.yticks(list(y), df["label"])
 plt.xlabel("Odds Ratio (OR) with 95% CI")
 plt.title("Treatment effects on correctness (logistic regression)")
 
-# optional: annotate p-values
+
 for i, p in enumerate(df["p_value"].to_numpy()):
     plt.text(high[i] * 1.02, i, f"p={p:.3g}", va="center", fontsize=9)
 
 plt.tight_layout()
-print("SAVED FIG OK")
 plt.savefig("forest_treatment_or.png", dpi=300)
 plt.show()
