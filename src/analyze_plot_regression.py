@@ -30,7 +30,7 @@ def ensure_dir(path: str) -> None:
 
 def summarize_config(df_perq: pd.DataFrame) -> pd.DataFrame:
     """
-    Reduce per-question rows to config-level means (for tradeoff plots).
+    Reduce per-question rows to config-level means (for plots).
     """
     g = df_perq.groupby("config_id", dropna=False)
     out = pd.DataFrame(
@@ -45,6 +45,8 @@ def summarize_config(df_perq: pd.DataFrame) -> pd.DataFrame:
             "mode_freq_mean": g["mode_freq"].mean(),
         }
     ).reset_index()
+    out["treatment"] = out["treatment"].astype(str)
+    out["temp"] = out["temp"].astype(float)
     return out.sort_values(["treatment", "temp"]).reset_index(drop=True)
 
 
@@ -60,7 +62,7 @@ def fit_binomial_glm(df_perq: pd.DataFrame, model_type: str):
     Implemented as GLM with response = successes/k_runs and freq_weights=k_runs.
 
     model_type:
-      - "additive":  prop ~ C(treatment) + temp
+      - "additive":    prop ~ C(treatment) + temp
       - "interaction": prop ~ C(treatment) * temp
     """
     df = df_perq.copy()
@@ -172,9 +174,8 @@ def fit_logistic_regression(df_runs: pd.DataFrame, model_type: str):
     Run-level logistic regression with question-clustered robust SE.
 
     model_type:
-      - "additive":  correct ~ C(treatment) + temp
+      - "additive":    correct ~ C(treatment) + temp
       - "interaction": correct ~ C(treatment) * temp
-
     """
     if model_type == "additive":
         formula = "correct ~ C(treatment) + temp"
@@ -227,6 +228,10 @@ def save_predicted_probability_table(res, df_source: pd.DataFrame, out_csv: str)
 
 # ============================================================
 # Tradeoff plots (colored by temperature consistently)
+# Best points = Pareto-optimal (NOT dominated)
+# Visual:
+#   - best points: same color, darker (alpha=0.95) + slightly larger
+#   - non-best:    same color, lighter (alpha=0.25)
 # ============================================================
 
 def _temp_color_map(temps):
@@ -235,34 +240,72 @@ def _temp_color_map(temps):
     return {t: cmap(i % 10) for i, t in enumerate(temps)}
 
 
+def _pareto_mask_max2(x: np.ndarray, y: np.ndarray) -> np.ndarray:
+    """
+    Pareto-optimal for maximizing BOTH x and y.
+    """
+    n = len(x)
+    keep = np.ones(n, dtype=bool)
+    for i in range(n):
+        if not keep[i]:
+            continue
+        dominated = (x >= x[i]) & (y >= y[i]) & ((x > x[i]) | (y > y[i]))
+        dominated[i] = False
+        if dominated.any():
+            keep[i] = False
+    return keep
+
+
+def _pareto_mask_entropy(x_entropy: np.ndarray, y_acc: np.ndarray) -> np.ndarray:
+    """
+    Pareto-optimal for (min entropy, max accuracy).
+    """
+    n = len(x_entropy)
+    keep = np.ones(n, dtype=bool)
+    for i in range(n):
+        if not keep[i]:
+            continue
+        dominated = (x_entropy <= x_entropy[i]) & (y_acc >= y_acc[i]) & (
+            (x_entropy < x_entropy[i]) | (y_acc > y_acc[i])
+        )
+        dominated[i] = False
+        if dominated.any():
+            keep[i] = False
+    return keep
+
+
 def plot_tradeoff_accuracy_vs_entropy(summary_cfg: pd.DataFrame, out_png: str) -> None:
     ensure_dir(out_png)
     dfp = summary_cfg.copy()
     dfp["temp"] = dfp["temp"].astype(float)
+    dfp["entropy_mean_bits"] = dfp["entropy_mean_bits"].astype(float)
+    dfp["accuracy_mean"] = dfp["accuracy_mean"].astype(float)
 
     temps = sorted(dfp["temp"].dropna().unique().tolist())
     color_map = _temp_color_map(temps)
+
+    x = dfp["entropy_mean_bits"].to_numpy()
+    y = dfp["accuracy_mean"].to_numpy()
+    best_mask = _pareto_mask_entropy(x_entropy=x, y_acc=y)
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
     for temp in temps:
-        sub = dfp[dfp["temp"] == temp]
-        ax.scatter(
-            sub["entropy_mean_bits"],
-            sub["accuracy_mean"],
-            label=f"temp={temp}",
-            alpha=0.75,
-            color=color_map[temp],
-        )
-        for _, r in sub.iterrows():
-            ax.annotate(
-                f"{r['treatment']}_t{r['temp']}",
-                (r["entropy_mean_bits"], r["accuracy_mean"]),
-                fontsize=7,
-                xytext=(3, 3),
-                textcoords="offset points",
-            )
+        sub = dfp[(dfp["temp"] == temp) & (~best_mask)]
+        ax.scatter(sub["entropy_mean_bits"], sub["accuracy_mean"],
+                   label=f"temp={temp}", alpha=0.25, color=color_map[temp], s=70)
+
+    best = dfp[best_mask]
+    for temp in temps:
+        sub = best[best["temp"] == temp]
+        ax.scatter(sub["entropy_mean_bits"], sub["accuracy_mean"],
+                   alpha=0.95, color=color_map[temp], s=110)
+
+    for _, r in dfp.iterrows():
+        ax.annotate(f"{r['treatment']}_t{r['temp']}",
+                    (r["entropy_mean_bits"], r["accuracy_mean"]),
+                    fontsize=7, xytext=(3, 3), textcoords="offset points")
 
     ax.set_xlabel("Mean Answer Entropy (bits)")
     ax.set_ylabel("Mean Accuracy")
@@ -277,30 +320,34 @@ def plot_tradeoff_accuracy_vs_stability(summary_cfg: pd.DataFrame, out_png: str)
     ensure_dir(out_png)
     dfp = summary_cfg.copy()
     dfp["temp"] = dfp["temp"].astype(float)
+    dfp["strict_stability_rate"] = dfp["strict_stability_rate"].astype(float)
+    dfp["accuracy_mean"] = dfp["accuracy_mean"].astype(float)
 
     temps = sorted(dfp["temp"].dropna().unique().tolist())
     color_map = _temp_color_map(temps)
+
+    x = dfp["strict_stability_rate"].to_numpy()
+    y = dfp["accuracy_mean"].to_numpy()
+    best_mask = _pareto_mask_max2(x=x, y=y)
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
     for temp in temps:
-        sub = dfp[dfp["temp"] == temp]
-        ax.scatter(
-            sub["strict_stability_rate"],
-            sub["accuracy_mean"],
-            label=f"temp={temp}",
-            alpha=0.75,
-            color=color_map[temp],
-        )
-        for _, r in sub.iterrows():
-            ax.annotate(
-                f"{r['treatment']}_t{r['temp']}",
-                (r["strict_stability_rate"], r["accuracy_mean"]),
-                fontsize=7,
-                xytext=(3, 3),
-                textcoords="offset points",
-            )
+        sub = dfp[(dfp["temp"] == temp) & (~best_mask)]
+        ax.scatter(sub["strict_stability_rate"], sub["accuracy_mean"],
+                   label=f"temp={temp}", alpha=0.25, color=color_map[temp], s=70)
+
+    best = dfp[best_mask]
+    for temp in temps:
+        sub = best[best["temp"] == temp]
+        ax.scatter(sub["strict_stability_rate"], sub["accuracy_mean"],
+                   alpha=0.95, color=color_map[temp], s=110)
+
+    for _, r in dfp.iterrows():
+        ax.annotate(f"{r['treatment']}_t{r['temp']}",
+                    (r["strict_stability_rate"], r["accuracy_mean"]),
+                    fontsize=7, xytext=(3, 3), textcoords="offset points")
 
     ax.set_xlabel("Strict Stability Rate")
     ax.set_ylabel("Mean Accuracy")
@@ -312,28 +359,84 @@ def plot_tradeoff_accuracy_vs_stability(summary_cfg: pd.DataFrame, out_png: str)
 
 
 # ============================================================
-# Forest plots
+# DOT plots by treatment grouped by temperature (NO LINES)
+# ============================================================
+
+def _ordered_treatments(summary_cfg: pd.DataFrame):
+    canonical = ["T0", "T1", "T2", "T3", "T4", "T5"]
+    present = [t for t in canonical if t in set(summary_cfg["treatment"].astype(str))]
+    return present if present else sorted(summary_cfg["treatment"].astype(str).unique().tolist())
+
+
+def _ordered_temps(summary_cfg: pd.DataFrame):
+    temps = summary_cfg["temp"].dropna().astype(float).unique().tolist()
+    return sorted(temps)
+
+
+def plot_metric_by_treatment_grouped_by_temp_dot(
+    summary_cfg: pd.DataFrame,
+    metric_col: str,
+    ylabel: str,
+    title: str,
+    out_png: str,
+) -> None:
+    """
+    Dot plot ONLY (no connecting lines):
+      x-axis: treatment
+      legend: temperature
+      y-axis: metric_col
+    """
+    ensure_dir(out_png)
+
+    dfp = summary_cfg.copy()
+    dfp["treatment"] = dfp["treatment"].astype(str)
+    dfp["temp"] = dfp["temp"].astype(float)
+
+    treatments = _ordered_treatments(dfp)
+    temps = _ordered_temps(dfp)
+
+    x = np.arange(len(treatments))
+    offsets = np.linspace(-0.22, 0.22, len(temps)) if len(temps) > 1 else [0.0]
+
+    fig = plt.figure(figsize=(7.5, 4.6))
+    ax = fig.add_subplot(111)
+
+    for off, temp in zip(offsets, temps):
+        sub = dfp[dfp["temp"] == float(temp)]
+        y = []
+        for t in treatments:
+            m = sub.loc[sub["treatment"] == t, metric_col]
+            y.append(float(m.iloc[0]) if len(m) else np.nan)
+
+        ax.scatter(x + off, y, label=f"temp={temp}")
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(treatments)
+    ax.set_xlabel("Treatment")
+    ax.set_ylabel(ylabel)
+    ax.set_title(title)
+    ax.legend()
+    fig.tight_layout()
+    fig.savefig(out_png, dpi=300)
+    plt.close(fig)
+
+
+# ============================================================
+# Forest plots (from coef CSV produced by save_coef_table)
 # ============================================================
 
 def plot_forest_treatment_or_from_coef_csv(
     coef_csv: str,
     out_png: str,
     title: str,
-    include_temp: bool = False,
 ) -> None:
     """
     Forest plot of OR (95% CI) for treatment indicators relative to T0.
-    Reads *_coef.csv produced by save_coef_table.
-
-    include_temp=True will also include the 'temp' row (OR per +1.0 temperature unit).
     """
     ensure_dir(out_png)
     df = pd.read_csv(coef_csv)
 
-    keep = df["term"].astype(str).str.contains(r"C\(treatment\)")
-    if include_temp:
-        keep = keep | (df["term"].astype(str) == "temp")
-    df = df[keep].copy()
+    df = df[df["term"].astype(str).str.contains(r"C\(treatment\)")].copy()
 
     label_map = {
         "C(treatment)[T.T1]": "T1 vs T0",
@@ -341,13 +444,9 @@ def plot_forest_treatment_or_from_coef_csv(
         "C(treatment)[T.T3]": "T3 vs T0",
         "C(treatment)[T.T4]": "T4 vs T0",
         "C(treatment)[T.T5]": "T5 vs T0",
-        "temp": "Temperature (per +1.0)",
     }
     df["label"] = df["term"].map(label_map).fillna(df["term"].astype(str))
-
     order = ["T1 vs T0", "T2 vs T0", "T3 vs T0", "T4 vs T0", "T5 vs T0"]
-    if include_temp:
-        order = order + ["Temperature (per +1.0)"]
     df["label"] = pd.Categorical(df["label"], categories=order, ordered=True)
     df = df.sort_values("label").reset_index(drop=True)
 
@@ -364,15 +463,13 @@ def plot_forest_treatment_or_from_coef_csv(
     ax = fig.add_subplot(111)
     ax.errorbar(or_, y, xerr=xerr, fmt="o", capsize=4)
     ax.axvline(1.0, linestyle="--")
-
     ax.set_yticks(list(y))
     ax.set_yticklabels(df["label"].astype(str).tolist())
     ax.set_xlabel("Odds Ratio (OR) with 95% CI")
     ax.set_title(title)
 
-    if "p_value" in df.columns:
-        for i, p in enumerate(df["p_value"].to_numpy(dtype=float)):
-            ax.text(high[i] * 1.02, i, f"p={p:.3g}", va="center", fontsize=9)
+    for i, p in enumerate(df["p_value"].to_numpy(dtype=float)):
+        ax.text(high[i] * 1.02, i, f"p={p:.3g}", va="center", fontsize=9)
 
     fig.tight_layout()
     fig.savefig(out_png, dpi=300)
@@ -382,11 +479,11 @@ def plot_forest_treatment_or_from_coef_csv(
 def plot_forest_temp_slopes_from_interaction_coef_csv(
     interaction_coef_csv: str,
     out_png: str,
-    title: str = "Temperature sensitivity by treatment (interaction model)",
+    title: str = "Temperature sensitivity by treatment (interaction logit; approx. CI)",
 ) -> None:
     """
     Forest plot for temperature slope ORs per +1.0 temp, by treatment,
-    using the interaction model coef csv: * ~ C(treatment)*temp.
+    using the interaction model coef csv: correct ~ C(treatment)*temp.
 
     For T0: slope = temp
     For Tj: slope = temp + C(treatment)[T.Tj]:temp
@@ -416,14 +513,14 @@ def plot_forest_temp_slopes_from_interaction_coef_csv(
         or_ = np.exp(b)
         low = np.exp(b - 1.96 * s)
         high = np.exp(b + 1.96 * s)
-        rows.append({"label": f"{t}: OR per +1.0 temp", "odds_ratio": or_, "low": low, "high": high})
+        rows.append({"label": f"{t}: OR per +1.0 temp", "or": or_, "low": low, "high": high})
 
     out = pd.DataFrame(rows)
     if out.empty:
         return
 
     y = np.arange(len(out))
-    or_ = out["odds_ratio"].to_numpy()
+    or_ = out["or"].to_numpy()
     low = out["low"].to_numpy()
     high = out["high"].to_numpy()
     xerr = np.vstack([or_ - low, high - or_])
@@ -478,14 +575,12 @@ def main() -> None:
     df["successes"] = df["successes"].clip(lower=0, upper=df["k_runs"].astype(int))
     df = df.dropna(subset=["temp", "k_runs", "successes"])
 
-    # Config-level summary for tradeoff plots
+    # Config-level summary
     summary_cfg = summarize_config(df)
     summary_path = os.path.join(out_dir, "summary_by_config.csv")
     summary_cfg.to_csv(summary_path, index=False)
 
-    # =========================
-    # GLM models (KEEP)
-    # =========================
+    # GLM models
     for model_type in ["additive", "interaction"]:
         name, res = fit_binomial_glm(df, model_type=model_type)
         save_coef_table(
@@ -494,9 +589,7 @@ def main() -> None:
             os.path.join(out_dir, f"{name}_summary.txt"),
         )
 
-    # =========================
     # Run-level logistic models
-    # =========================
     df_runs = expand_to_run_level(df)
     df_runs.to_csv(os.path.join(out_dir, "run_level_expanded.csv"), index=False)
 
@@ -518,35 +611,44 @@ def main() -> None:
             os.path.join(out_dir, f"{name}_predicted_probs.csv"),
         )
 
-    # =========================
-    # Tradeoff plots 
-    # =========================
-    plot_tradeoff_accuracy_vs_entropy(
+    # Tradeoff plots
+    plot_tradeoff_accuracy_vs_entropy(summary_cfg, os.path.join(out_dir, "tradeoff_accuracy_vs_entropy.png"))
+    plot_tradeoff_accuracy_vs_stability(summary_cfg, os.path.join(out_dir, "tradeoff_accuracy_vs_stability.png"))
+
+    # Dot plots (NO LINES): accuracy / entropy / stability
+    plot_metric_by_treatment_grouped_by_temp_dot(
         summary_cfg,
-        os.path.join(out_dir, "tradeoff_accuracy_vs_entropy.png"),
+        metric_col="accuracy_mean",
+        ylabel="Mean Accuracy",
+        title="Accuracy by Treatment (grouped by temperature)",
+        out_png=os.path.join(out_dir, "accuracy_by_treatment_grouped_by_temp_DOT.png"),
     )
-    plot_tradeoff_accuracy_vs_stability(
+    plot_metric_by_treatment_grouped_by_temp_dot(
         summary_cfg,
-        os.path.join(out_dir, "tradeoff_accuracy_vs_stability.png"),
+        metric_col="entropy_mean_bits",
+        ylabel="Mean Answer Entropy (bits)",
+        title="Entropy by Treatment (grouped by temperature)",
+        out_png=os.path.join(out_dir, "entropy_by_treatment_grouped_by_temp_DOT.png"),
+    )
+    plot_metric_by_treatment_grouped_by_temp_dot(
+        summary_cfg,
+        metric_col="strict_stability_rate",
+        ylabel="Strict Stability Rate",
+        title="Strict Stability by Treatment (grouped by temperature)",
+        out_png=os.path.join(out_dir, "stability_by_treatment_grouped_by_temp_DOT.png"),
     )
 
-    # =========================
-    # Forest plots (KEEP; from run-level logit outputs)
-    # =========================
+    # Forest plots (from logit coef CSV)
     plot_forest_treatment_or_from_coef_csv(
         coef_csv=os.path.join(out_dir, "logit_additive_coef.csv"),
         out_png=os.path.join(out_dir, "forest_logit_additive_treatment_or.png"),
         title="Treatment effects on correctness (logit additive; clustered SE)",
-        include_temp=False,
     )
-
     plot_forest_treatment_or_from_coef_csv(
         coef_csv=os.path.join(out_dir, "logit_interaction_coef.csv"),
         out_png=os.path.join(out_dir, "forest_logit_interaction_treatment_or.png"),
         title="Treatment effects on correctness (logit interaction; clustered SE)",
-        include_temp=False,
     )
-
     plot_forest_temp_slopes_from_interaction_coef_csv(
         interaction_coef_csv=os.path.join(out_dir, "logit_interaction_coef.csv"),
         out_png=os.path.join(out_dir, "forest_logit_interaction_temp_slopes.png"),
