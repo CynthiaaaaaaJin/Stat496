@@ -323,7 +323,7 @@ def plot_tradeoff_accuracy_vs_entropy(summary_cfg: pd.DataFrame, out_png: str) -
 
     for _, r in dfp.iterrows():
         ax.annotate(
-            f"{r['treatment']}_t{r['temp']}",
+            f"{r['treatment']}",
             (r["entropy_mean_bits"], r["accuracy_mean"]),
             fontsize=7,
             xytext=(3, 3),
@@ -389,7 +389,7 @@ def plot_tradeoff_accuracy_vs_stability(summary_cfg: pd.DataFrame, out_png: str)
 
     for _, r in dfp.iterrows():
         ax.annotate(
-            f"{r['treatment']}_t{r['temp']}",
+            f"{r['treatment']}",
             (r["strict_stability_rate"], r["accuracy_mean"]),
             fontsize=7,
             xytext=(3, 3),
