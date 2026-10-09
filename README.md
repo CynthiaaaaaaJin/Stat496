@@ -1,43 +1,68 @@
-# STAT496 Small Test - RQ1(check write_up.txt)
+# Prompt Templates and Temperature Effects on LLM Commonsense Reasoning
 
-## Goal
-Test how prompt instruction styles (T0–T5) and temperature affect:
-- correctness (accuracy vs ground truth)
-- stability (answer consistency across repeats)
-- cost proxy (token usage, when available)
+**STAT 496 Undergraduate Capstone Project | University of Washington**  
+**Authors:** Yan Peng and Yuxin Jin  
+**Instructor:** Anne Wagner
 
-## Dataset
-Biochemistry 406 Exam - multiple-choice sample (10 questions for small test).
+## Overview
 
-## Treatments (Prompts)
-- T0: normal
-- T1: final only
-- T2: short steps + final
-- T3: evidence line quoting selected option + final
-- T4: short steps + evidence + final
-- T5: normal + self check
+This project investigates how prompt design and sampling temperature affect the **accuracy and reproducibility** of large language models (LLMs) on commonsense reasoning tasks.
 
-All prompts enforce the last line:
-`Final:<LETTER>`
+Using 100 questions from the [COSMOS QA](https://wilburone.github.io/cosmos/) dataset, we evaluated three ChatGPT models (GPT-3.5-turbo, GPT-4o-mini, and GPT-4.1-mini) across six prompt treatments and six temperature settings, with five repeated runs per configuration.
 
-## Variables varied in small test
-- treatment: T0–T5
-- temperature: 0.2 vs 0.7 vs 1.0
-- repeats: 3 (small test), will increase later for stability
+## Methods
 
-## Terminal Process:
-python -m src.run_experiment \
-  --model-filename "/Users/cynthiajyx/Library/Application Support/nomic.ai/GPT4All/gpt4all-falcon-newbpe-q4_0.gguf" \
-  --dataset data/blog_10.jsonl \
-  --out-jsonl outputs/runs_blog10_T0_T5_t02_t07_k3_max256.jsonl \
-  --treatments T0 T1 T2 T3 T4 T5 \
-  --temps 0.2,0.7 \
-  --k 3 \
-  --max-tokens 256 \
-  --allow-explanation
+- **Experimental design:** Six prompt treatments (T0–T5) and six temperature settings (0.2–2.0).
+- **Statistical analysis:** Binomial logistic regression, odds ratios, and confidence intervals.
+- **Evaluation metrics:** Accuracy, strict stability, and answer entropy.
+- **Trade-off analysis:** Pareto frontier analysis of accuracy and reproducibility.
 
-python -m src.analyze_results \
---in-jsonl outputs/runs_blog10_T0_T5_t02_t07_k3_max256.jsonl \
- --out-summary-csv outputs/summary_blog10.csv \
---out-per-question-csv outputs/per_question_blog10.csv
+## Main Findings
 
+- Prompt design generally had a greater impact on performance than temperature alone.
+- Grounded prompting (T3) achieved one of the strongest balances between accuracy and consistency.
+- Self-check prompting (T5) often increased response variability, particularly at higher temperatures.
+- GPT-4.1-mini demonstrated the most balanced overall performance among the three models.
+
+## Repository Structure
+
+| Directory | Description |
+|---|---|
+| `data/` | COSMOS QA dataset and sampled questions |
+| `src/` | Experiment execution, data processing, statistical analysis, and visualization |
+| `outputs/` | Experimental results, summaries, and plots |
+| `writing/` | Project drafts and notes |
+
+### Key Scripts
+
+| File | Description |
+|---|---|
+| [`run_experiment_chatgpt.py`](src/run_experiment_chatgpt.py) | Runs API-based experiments |
+| [`prompts.py`](src/prompts.py) | Defines prompt treatments |
+| [`parsing.py`](src/parsing.py) | Extracts final answers |
+| [`analyze_results.py`](src/analyze_results.py) | Analyzes experimental results |
+| [`robust_cluster_se.py`](src/robust_cluster_se.py) | Performs cluster-robust standard error analysis |
+| [`forest_plot.py`](src/forest_plot.py) | Generates forest plots |
+
+## Running the Code
+
+Clone the repository and install the required dependencies:
+
+```bash
+git clone https://github.com/CynthiaaaaaaJin/Stat496.git
+cd Stat496
+python -m pip install -r requirements.txt
+```
+
+The main experimental script is `src/run_experiment_chatgpt.py`, with prompt definitions in `src/prompts.py` and the sampled dataset in `data/COSMOS_100.jsonl`.
+
+Analysis scripts are available in `src/`, and saved experimental results are stored in `outputs/`.
+
+Running new experiments requires OpenAI API access and may incur usage costs. The complete experiment and analysis commands have not been independently verified in a clean environment.
+
+## Report
+
+**Prompt Templates and Temperature Effects on LLM Commonsense Reasoning**  
+Yan Peng and Yuxin Jin, STAT 496 Capstone Project, 2026.
+
+The full report contains detailed methodology, statistical analyses, results, and discussion.
